@@ -1,1 +1,3 @@
-# lukuvinkkikirjasto
+# Lukuvinkkikirjasto
+
+Ohjelmointituotantokurssin miniprojeksi
