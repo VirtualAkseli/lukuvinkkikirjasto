@@ -1,6 +1,6 @@
 # Lukuvinkkikirjasto
 
-https://github.com/mluukkai/ohtu-viikko1-s2020/workflows/Java%20CI%20with%20Gradle/badge.svg
+![Github Actions](https://github.com/mluukkai/ohtu-viikko1-s2020/workflows/Java%20CI%20with%20Gradle/badge.svg)
 
 Ohjelmointituotantokurssin miniprojekti
 
