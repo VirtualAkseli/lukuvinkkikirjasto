@@ -15,3 +15,5 @@ team member
 - The task has been junit tested (when it makes sense)
 - The task has been merged to the main branch
 
+## How to run
+```git clone``` this repository. ```cd``` to the cloned repository and ```./gradlew run``` to start the application.
