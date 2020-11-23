@@ -25,5 +25,6 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.13' 
+    compile group: 'com.h2database', name: 'h2', version: '1.4.200'
 }
 mainClassName = 'Main'

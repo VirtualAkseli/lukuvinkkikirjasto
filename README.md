@@ -19,4 +19,7 @@ team member
 
 ## How to run
 ```git clone``` this repository. ```cd``` to the cloned repository and ```./gradlew run``` to start the application.
+
 Use `gradlew.bat` if you're using Windows.
+=======
+
