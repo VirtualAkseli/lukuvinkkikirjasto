@@ -70,13 +70,12 @@ public class Kayttoliittyma {
         System.out.println("Kirjailija: " + kirjailija);
     }
 
-    private void hae() {
+    private void hae() throws SQLException {
         System.out.println("Hakusana:");
         String hakusana = lukija.nextLine();
         System.out.println("Hetaan...");
-        // tähän koodi joka todella hakee tietokannasta
-        System.out.println("Haku sanalla " + hakusana + " tuotti 0 tulosta.");
-    }
+        tietokanta.haeKirjaa(hakusana);
+        }
 
     private void listaa() throws SQLException {
         System.out.println("Kaikki kirjat:");

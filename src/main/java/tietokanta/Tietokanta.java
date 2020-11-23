@@ -104,4 +104,37 @@ public class Tietokanta {
         }
     }
 
+    public void haeKirjaa(String hakusana) throws SQLException {
+        String hakusanaVillikorteilla = "%" + hakusana + "%";
+
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Kirjat WHERE otsikko LIKE ? OR kirjoittaja LIKE ?");
+        stmt.setString(1, hakusanaVillikorteilla);
+        stmt.setString(2, hakusanaVillikorteilla);
+        ResultSet results = stmt.executeQuery();
+
+        stmt = connection.prepareStatement("SELECT COUNT(*) FROM Kirjat WHERE otsikko LIKE ? OR kirjoittaja LIKE ?");
+        stmt.setString(1, hakusanaVillikorteilla);
+        stmt.setString(2, hakusanaVillikorteilla);
+        ResultSet maaraResults = stmt.executeQuery();
+
+        maaraResults.last();
+        int montakoLoytyi = maaraResults.getRow();
+        System.out.println("Löytyi " + montakoLoytyi + " hakutulosta.");
+        System.out.println("");
+
+        while (results.next()) {
+            int id = results.getInt("id");
+            String tyyppi = results.getString("tyyppi");
+            String otsikko = results.getString("otsikko");
+            String kirjoittaja = results.getString("kirjoittaja");
+            String isbn = results.getString("isbn");
+            String tagit = results.getString("tagit") != null ? results.getString("tagit") : " ";
+            String liittyvat_kurssit = results.getString("liittyvat_kurssit") != null ? results.getString("liittyvat_kurssit") : " ";
+
+            System.out.println("Kirjoittaja: " + kirjoittaja + "\nOtsikko: " + otsikko + "\n"
+                    + "Tyyppi: " + tyyppi + "\nISBN: " + isbn + "\nTagit: " + tagit + "\nRelated courses: " + liittyvat_kurssit + "\n" + "id: " + id + "\n");
+        }
+
+    }
+
 }
