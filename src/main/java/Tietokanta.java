@@ -21,13 +21,17 @@ public class Tietokanta {
         }
         
         
-        PreparedStatement stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS Kirjat (id INTEGER PRIMARY KEY AUTO_INCREMENT, kirjoittaja TEXT, otsikko TEXT, tyyppi TEXT default 'Kirja', isbn TEXT, tagit TEXT, liittyvat_kurssit TEXT)");
+        PreparedStatement stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS Kirjat (id INTEGER PRIMARY KEY AUTO_INCREMENT, tyyppi TEXT default 'Kirja', kirjoittaja TEXT, "
+                + "otsikko TEXT, isbn TEXT, liittyvat_kurssit TEXT, tagit TEXT, kommentti TEXT)");
         stmt.execute();
-        stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS Videot (id INTEGER PRIMARY KEY AUTO_INCREMENT, otsikko TEXT, url TEXT, liittyvat_kurssit TEXT, tyyppi TEXT default 'Video', kommentti TEXT)");
+        stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS Videot (id INTEGER PRIMARY KEY AUTO_INCREMENT, tyyppi TEXT default 'Video', otsikko TEXT, url TEXT, "
+                + "liittyvat_kurssit TEXT, tagit TEXT, kommentti TEXT)");
         stmt.execute();
-        stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS Blogit (id INTEGER PRIMARY KEY AUTO_INCREMENT, otsikko TEXT, kirjoittaja TEXT, url TEXT, tyyppi TEXT default 'Blogpost', liittyvat_kurssit TEXT)");
+        stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS Blogit (id INTEGER PRIMARY KEY AUTO_INCREMENT, tyyppi TEXT default 'Blogpost', otsikko TEXT, kirjoittaja TEXT, "
+                + "url TEXT, liittyvat_kurssit TEXT, tagit TEXT, kommentti TEXT)");
         stmt.execute();
-        stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS Podcastit (id INTEGER PRIMARY KEY AUTO_INCREMENT, tekija TEXT, podcastin_nimi TEXT, otsikko TEXT, kuvaus TEXT, tyyppi TEXT default 'Podcast', tagit TEXT, liittyvat_kurssit TEXT)");
+        stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS Podcastit (id INTEGER PRIMARY KEY AUTO_INCREMENT, tyyppi TEXT default 'Podcast', tekija TEXT, podcastin_nimi TEXT, "
+                + "otsikko TEXT, kuvaus TEXT, liittyvat_kurssit TEXT, tagit TEXT, kommentti TEXT)");
         stmt.execute();
         
 //        stmt = connection.prepareStatement("INSERT INTO Kirjat (kirjoittaja, otsikko, isbn, tagit, liittyvat_kurssit) VALUES ('testaaja', 'testi', '1111-1111', 'testausta', 'ohjelmistotuotanto')");
