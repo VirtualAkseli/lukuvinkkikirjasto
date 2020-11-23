@@ -10,3 +10,8 @@ build
 
 # Ignore local database
 *.db*
+
+# Ignore local settings & system files
+.vscode/settings.json
+.DS_Store
+.Trashes
