@@ -1,26 +1,28 @@
+package tietokanta;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Tietokanta {
-    
-    
-    public Tietokanta() throws SQLException{
-        
-        
-        Connection connection = null;
+
+    private Connection connection;
+
+    public Tietokanta() throws SQLException {
+
+        this.connection = null;
+
         try {
             connection = DriverManager.getConnection("jdbc:h2:./lukuvinkkitietokanta", "sa", "");
             System.out.println("Yhditettiin tietokantaan onnistuneesti");
         } catch (SQLException ex) {
             Logger.getLogger(Tietokanta.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
         PreparedStatement stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS Kirjat (id INTEGER PRIMARY KEY AUTO_INCREMENT, tyyppi TEXT default 'Kirja', kirjoittaja TEXT, "
                 + "otsikko TEXT, isbn TEXT, liittyvat_kurssit TEXT, tagit TEXT, kommentti TEXT)");
         stmt.execute();
@@ -33,7 +35,10 @@ public class Tietokanta {
         stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS Podcastit (id INTEGER PRIMARY KEY AUTO_INCREMENT, tyyppi TEXT default 'Podcast', tekija TEXT, podcastin_nimi TEXT, "
                 + "otsikko TEXT, kuvaus TEXT, liittyvat_kurssit TEXT, tagit TEXT, kommentti TEXT)");
         stmt.execute();
-        
+
+//        stmt = connection.prepareStatement("INSERT INTO Kirjat (kirjoittaja, otsikko, isbn, tagit, liittyvat_kurssit) VALUES ('testaaja', 'testi', '1111-1111', 'testausta', 'ohjelmistotuotanto')");
+//        stmt.execute();
+
 //        stmt = connection.prepareStatement("INSERT INTO Kirjat (kirjoittaja, otsikko, isbn, tagit, liittyvat_kurssit) VALUES ('testaaja', 'testi', '1111-1111', 'testausta', 'ohjelmistotuotanto')");
 //        stmt.execute();
 //        stmt = connection.prepareStatement("INSERT INTO Kirjat (kirjoittaja, otsikko, isbn, liittyvat_kurssit) VALUES ('testaaja', 'testi', '1111-1111', 'ohjelmistotuotanto')");
@@ -52,6 +57,37 @@ public class Tietokanta {
 //            System.out.println("Kirjoittaja: " + kirjoittaja + "\nOtsikko: " + otsikko + "\n"
 //                    + "Tyyppi: " + tyyppi + "\nISBN: " + isbn +"\nTagit: "+ tagit +"\nRelated courses: " +  liittyvat_kurssit + "\n");
 //       }
-        connection.close();
     }
+
+    public void sulje() throws SQLException {
+        try {
+            connection.close();
+            System.out.println("Yhteys katkaistu onnistuneesti.");
+        } catch (Exception e) {
+            System.out.println("Virhe tietokannan sulkemisessa: " + e);
+
+        }
+    }
+
+    public void lisaaKirja(String kirjanNimi, String kirjailija) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void listaaKaikkiKirjat() throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Kirjat");
+        ResultSet results = stmt.executeQuery();
+        while (results.next()) {
+            int id = results.getInt("id");
+            String tyyppi = results.getString("tyyppi");
+            String otsikko = results.getString("otsikko");
+            String kirjoittaja = results.getString("kirjoittaja");
+            String isbn = results.getString("isbn");
+            String tagit = results.getString("tagit") != null ? results.getString("tagit") : " ";
+            String liittyvat_kurssit = results.getString("liittyvat_kurssit") != null ? results.getString("liittyvat_kurssit") : " ";
+
+            System.out.println("Kirjoittaja: " + kirjoittaja + "\nOtsikko: " + otsikko + "\n"
+                    + "Tyyppi: " + tyyppi + "\nISBN: " + isbn + "\nTagit: " + tagit + "\nRelated courses: " + liittyvat_kurssit + "\n" + "id: " + id + "\n");
+        }
+    }
+
 }
