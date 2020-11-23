@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 public class Kayttoliittyma {
 
-    private Scanner lukija;
-    private Tietokanta tietokanta;
+    private final Scanner lukija;
+    private final Tietokanta tietokanta;
 
     public Kayttoliittyma(Tietokanta tietokanta) {
         this.lukija = new Scanner(System.in);
@@ -56,15 +56,15 @@ public class Kayttoliittyma {
         System.out.println("");
     }
         
-    private void lisaa() {
+    private void lisaa() throws SQLException {
         System.out.println("Kirjan nimi:");
         String kirjanNimi = lukija.nextLine();
         System.out.println("Kirjailija:");
         String kirjailija = lukija.nextLine();
-        // tähän koodi joka todella lisää kirjan tietokantaan
+
         tietokanta.lisaaKirja(kirjanNimi, kirjailija);
         
-        
+       
         System.out.println("Lisätty!");
         System.out.println("Kirjan nimi: " + kirjanNimi);
         System.out.println("Kirjailija: " + kirjailija);
@@ -82,6 +82,4 @@ public class Kayttoliittyma {
         System.out.println("Kaikki kirjat:");
         tietokanta.listaaKaikkiKirjat();
     }
-   
-
 }

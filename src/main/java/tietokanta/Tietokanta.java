@@ -38,7 +38,6 @@ public class Tietokanta {
 
 //        stmt = connection.prepareStatement("INSERT INTO Kirjat (kirjoittaja, otsikko, isbn, tagit, liittyvat_kurssit) VALUES ('testaaja', 'testi', '1111-1111', 'testausta', 'ohjelmistotuotanto')");
 //        stmt.execute();
-
 //        stmt = connection.prepareStatement("INSERT INTO Kirjat (kirjoittaja, otsikko, isbn, tagit, liittyvat_kurssit) VALUES ('testaaja', 'testi', '1111-1111', 'testausta', 'ohjelmistotuotanto')");
 //        stmt.execute();
 //        stmt = connection.prepareStatement("INSERT INTO Kirjat (kirjoittaja, otsikko, isbn, liittyvat_kurssit) VALUES ('testaaja', 'testi', '1111-1111', 'ohjelmistotuotanto')");
@@ -69,8 +68,23 @@ public class Tietokanta {
         }
     }
 
-    public void lisaaKirja(String kirjanNimi, String kirjailija) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void lisaaKirja(String otsikko, String kirjoittaja) throws SQLException {
+        // leikki-valueita tässä vaiheessa kehitystä:
+        String isbn = "0";
+        String tagit = "";
+        String liittyvat_kurssit = "";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Kirjat (kirjoittaja, otsikko, isbn, tagit, liittyvat_kurssit) VALUES (?, ?, ?, ?, ?)");
+            stmt.setString(1, kirjoittaja);
+            stmt.setString(2, otsikko);
+            stmt.setString(3, isbn);
+            stmt.setString(4, tagit);
+            stmt.setString(5, liittyvat_kurssit);
+            stmt.execute();
+        } catch (Exception e) {
+            System.out.println("Virhe kirjan lisäämisessä: " + e);
+        }
     }
 
     public void listaaKaikkiKirjat() throws SQLException {
