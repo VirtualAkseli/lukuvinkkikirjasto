@@ -1,16 +1,20 @@
 package kayttoliittyma;
 
+import java.sql.SQLException;
+import tietokanta.Tietokanta;
 import java.util.Scanner;
 
 public class Kayttoliittyma {
 
-    private Scanner lukija;
+    private final Scanner lukija;
+    private final Tietokanta tietokanta;
 
-    public Kayttoliittyma() {
+    public Kayttoliittyma(Tietokanta tietokanta) {
         this.lukija = new Scanner(System.in);
+        this.tietokanta = tietokanta;
     }
 
-    public void lue() {
+    public void suorita() throws SQLException {
         boolean jatketaan = true;
         listaaKomennot();
         while (jatketaan) {
@@ -19,10 +23,11 @@ public class Kayttoliittyma {
             String komento = lukija.nextLine();
             jatketaan = suoritaKomento(komento);
         }
-        System.out.println("Lopetetaan.");
+        System.out.println("Lopetetaan...");
+        tietokanta.sulje();
     }
 
-    public Boolean suoritaKomento(String komento) {
+    public Boolean suoritaKomento(String komento) throws SQLException {
         switch (komento) {
             case "lisaa":
                 lisaa();
@@ -37,7 +42,6 @@ public class Kayttoliittyma {
                 return false;
             default:
                 System.out.println("Virheellinen komento. Yritä uudestaan.");
-                lue();
                 return true;
         }
     }
@@ -52,30 +56,29 @@ public class Kayttoliittyma {
         System.out.println("");
     }
         
-    private void lisaa() {
+    private void lisaa() throws SQLException {
         System.out.println("Kirjan nimi:");
         String kirjanNimi = lukija.nextLine();
         System.out.println("Kirjailija:");
         String kirjailija = lukija.nextLine();
-        // tähän koodi joka todella lisää kirjan tietokantaan
+
+        tietokanta.lisaaKirja(kirjanNimi, kirjailija);
+        
+       
         System.out.println("Lisätty!");
         System.out.println("Kirjan nimi: " + kirjanNimi);
         System.out.println("Kirjailija: " + kirjailija);
     }
 
-    private void hae() {
+    private void hae() throws SQLException {
         System.out.println("Hakusana:");
         String hakusana = lukija.nextLine();
         System.out.println("Hetaan...");
-        // tähän koodi joka todella hakee tietokannasta
-        System.out.println("Haku sanalla " + hakusana + " tuotti 0 tulosta.");
-    }
+        tietokanta.haeKirjaa(hakusana);
+        }
 
-    private void listaa() {
-        // tähän koodi joka todella listaa kaiken
-        System.out.println("Listalla ei ole yhtään kirjaa.");
-        lue();
+    private void listaa() throws SQLException {
+        System.out.println("Kaikki kirjat:");
+        tietokanta.listaaKaikkiKirjat();
     }
-   
-
 }
