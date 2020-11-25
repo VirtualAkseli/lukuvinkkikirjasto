@@ -1,15 +1,15 @@
 package kayttoliittyma;
 
 import java.sql.SQLException;
-import tietokanta.Tietokanta;
+import tietokanta.Database;
 import java.util.Scanner;
 
 public class Kayttoliittyma {
 
     private final Scanner lukija;
-    private final Tietokanta tietokanta;
+    private final Database tietokanta;
 
-    public Kayttoliittyma(Tietokanta tietokanta) {
+    public Kayttoliittyma(Database tietokanta) {
         this.lukija = new Scanner(System.in);
         this.tietokanta = tietokanta;
     }
@@ -24,7 +24,7 @@ public class Kayttoliittyma {
             jatketaan = suoritaKomento(komento);
         }
         System.out.println("Lopetetaan...");
-        tietokanta.sulje();
+        tietokanta.close();
     }
 
     public Boolean suoritaKomento(String komento) throws SQLException {
@@ -62,7 +62,7 @@ public class Kayttoliittyma {
         System.out.println("Kirjailija:");
         String kirjailija = lukija.nextLine();
 
-        tietokanta.lisaaKirja(kirjanNimi, kirjailija);
+        tietokanta.addBook(kirjanNimi, kirjailija);
         
        
         System.out.println("Lisätty!");
@@ -74,11 +74,11 @@ public class Kayttoliittyma {
         System.out.println("Hakusana:");
         String hakusana = lukija.nextLine();
         System.out.println("Hetaan...");
-        tietokanta.haeKirjaa(hakusana);
+        tietokanta.searchForbook(hakusana);
         }
 
     private void listaa() throws SQLException {
         System.out.println("Kaikki kirjat:");
-        tietokanta.listaaKaikkiKirjat();
+        tietokanta.listAllBooks();
     }
 }
