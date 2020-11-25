@@ -1,23 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tietokanta;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- *
- * @author tata
- */
 public class TietokantaTest {
 
     Connection connection;
@@ -50,7 +40,5 @@ public class TietokantaTest {
         stmt = connection.prepareStatement("SELECT * FROM Kirjat");
         results = stmt.executeQuery();
         assertEquals(false, results.first()); // resultsetin metodi first palauttaa siis falsen jos ei ole. 
-        
     }
-
 }
