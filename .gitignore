@@ -2,6 +2,11 @@
 .idea
 *.iml
 
+# For Eclipse
+.settings/
+.classpath
+.project
+
 # Ignore Gradle project-specific cache directory
 .gradle
 
@@ -15,3 +20,4 @@ build
 .vscode/settings.json
 .DS_Store
 .Trashes
+bin/
