@@ -1,33 +1,36 @@
 package kayttoliittyma;
 
-import java.sql.SQLException;
-import tietokanta.Database;
+import tietokanta.Dao;
+import vinkkilogic.Book;
+
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static utilities.MappingUtils.toMap;
 
 public class Kayttoliittyma {
-
+    Dao<Book, Long> bookDao;
     private final Scanner lukija;
-    private final Database tietokanta;
 
-    public Kayttoliittyma(Database tietokanta) {
+    public Kayttoliittyma(Dao<Book, Long> bookDao) {
+        this.bookDao = bookDao;
         this.lukija = new Scanner(System.in);
-        this.tietokanta = tietokanta;
     }
 
-    public void suorita() throws SQLException {
+    public void suorita() {
         boolean jatketaan = true;
         listaaKomennot();
         while (jatketaan) {
             System.out.println("Anna komento!");
-
             String komento = lukija.nextLine();
             jatketaan = suoritaKomento(komento);
         }
         System.out.println("Lopetetaan...");
-        tietokanta.close();
     }
 
-    public Boolean suoritaKomento(String komento) throws SQLException {
+    public Boolean suoritaKomento(String komento) {
         switch (komento) {
             case "lisaa":
                 lisaa();
@@ -56,29 +59,31 @@ public class Kayttoliittyma {
         System.out.println("");
     }
         
-    private void lisaa() throws SQLException {
+    private void lisaa() {
         System.out.println("Kirjan nimi:");
         String kirjanNimi = lukija.nextLine();
         System.out.println("Kirjailija:");
         String kirjailija = lukija.nextLine();
-
-        tietokanta.addBook(kirjanNimi, kirjailija);
-        
-       
+        bookDao.create(new Book(kirjanNimi, kirjailija));
         System.out.println("Lisätty!");
         System.out.println("Kirjan nimi: " + kirjanNimi);
         System.out.println("Kirjailija: " + kirjailija);
     }
 
-    private void hae() throws SQLException {
+    private void hae() {
         System.out.println("Hakusana:");
         String hakusana = lukija.nextLine();
         System.out.println("Hetaan...");
-        tietokanta.searchForbook(hakusana);
-        }
+        List<Book> byTitle = bookDao.getByValue(toMap("title", hakusana));
+        List<Book> byAuthor = bookDao.getByValue(toMap("author", hakusana));
+        System.out.println("Löytyi " + (byTitle.size() + byAuthor.size()) + " hakutulosta.");
+        Stream.concat(byTitle.stream(), byAuthor.stream())
+                .collect(Collectors.toList()).forEach(System.out::println);
+        System.out.println("");
+    }
 
-    private void listaa() throws SQLException {
+    private void listaa() {
         System.out.println("Kaikki kirjat:");
-        tietokanta.listAllBooks();
+        bookDao.list().forEach(System.out::println);
     }
 }

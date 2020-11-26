@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class DatabaseTest {
 
-    Connection connection;
+/*    Connection connection;
 
     @Before
     public void setUp() throws Exception {
@@ -40,5 +40,5 @@ public class DatabaseTest {
         stmt = connection.prepareStatement("SELECT * FROM Kirjat");
         results = stmt.executeQuery();
         assertEquals(false, results.first()); // resultsetin metodi first palauttaa siis falsen jos ei ole. 
-    }
+    }*/
 }

@@ -1,26 +1,23 @@
 package controller;
 
-import tietokanta.Database;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import kayttoliittyma.Kayttoliittyma;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import tietokanta.BookDao;
 
+
+@SpringBootApplication
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello Lukuvinkkikirjasto!");
-
-        System.out.println("Yhdistetään tietokantaan");
-        try {
-            Database tietokanta = new Database();
-            Kayttoliittyma kl = new Kayttoliittyma(tietokanta);
-
-            kl.suorita();
-        } catch (SQLException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        ApplicationContext context = SpringApplication.run(Main.class, args);
+        JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
+        BookDao bookDao = new BookDao(jdbcTemplate);
+        Kayttoliittyma kl = new Kayttoliittyma(bookDao);
+        kl.suorita();
     }
+
 }
