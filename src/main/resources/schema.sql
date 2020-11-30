@@ -1,47 +1,47 @@
-CREATE TABLE IF NOT EXISTS Books
+CREATE TABLE IF NOT EXISTS Tips
 (
     id              IDENTITY,
-    type            VARCHAR(1000)        default 'Book',
-    author          VARCHAR(1000),
-    title           VARCHAR(1000),
-    isbn            VARCHAR(1000),
-    relatedCourses  VARCHAR(1000),
-    tags            VARCHAR(1000),
-    comments        VARCHAR(1000)
+    tip_type        TEXT                CHECK tip_type IN ('Book', 'Video', 'Blogpost', 'Podcast'),
+    author          TEXT,
+    tip_name        TEXT,
+    identifier      TEXT,               /* For example ISBN, ISRC, DOI etc. */
+    url             TEXT,
+    tags            TEXT,
+    comments        TEXT,
 );
 
-CREATE TABLE IF NOT EXISTS Videos
+DROP INDEX IF EXISTS type_index;
+CREATE INDEX type_index ON Tips (tip_type);
+
+CREATE TABLE IF NOT EXISTS Courses
 (
     id              IDENTITY,
-    type            VARCHAR(1000)        default 'Video',
-    title           VARCHAR(1000),
-    url             VARCHAR(1000),
-    relatedCourses  VARCHAR(1000),
-    tags            VARCHAR(1000),
-    comments        VARCHAR(1000)
+    course_name     TEXT                NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Blogs
+CREATE TABLE IF NOT EXISTS Tags
 (
     id              IDENTITY,
-    type            VARCHAR(1000)        default 'Blogpost',
-    title           VARCHAR(1000),
-    author          VARCHAR(1000),
-    url             VARCHAR(1000),
-    relatedCourses  VARCHAR(1000),
-    tags            VARCHAR(1000),
-    comments        VARCHAR(1000)
+    tag_name        TEXT                NOT NULL,
 );
 
-CREATE TABLE IF NOT EXISTS Podcasts
+CREATE TABLE IF NOT EXISTS Tip_courses
 (
-    id              IDENTITY,
-    type            VARCHAR(1000)        default 'Podcast',
-    author          VARCHAR(1000),
-    podcastName     VARCHAR(1000),
-    otsikko         VARCHAR(1000),
-    description     VARCHAR(1000),
-    relatedCourses  VARCHAR(1000),
-    tags            VARCHAR(1000),
-    comments        VARCHAR(1000)
+    id          IDENTITY,
+    tip_id      BIGINT                  NOT NULL,
+    course_id   BIGINT                  NOT NULL,
+
+    FOREIGN KEY (tip_id) REFERENCES Tips (id),
+    FOREIGN KEY (course_id) REFERENCES Courses (id)
+);
+
+CREATE TABLE IF NOT EXISTS Tip_tags
+(
+    id          IDENTITY,
+    course_name TEXT,
+    tip_id      BIGINT                  NOT NULL,
+    tag_id      BIGINT                  NOT NULL,
+
+    FOREIGN KEY (tip_id) REFERENCES Tips (id),
+    FOREIGN KEY (tag_id) REFERENCES Tags (id)
 );
