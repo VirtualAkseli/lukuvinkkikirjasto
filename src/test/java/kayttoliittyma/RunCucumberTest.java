@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
     plugin = "pretty", 
-    features = "src/test/resources/ohtu", 
+    features = "src/test/resources/kayttoliittyma", 
     snippets = SnippetType.CAMELCASE 
 )
 
