@@ -1,6 +1,6 @@
 package controller;
 
-import tietokanta.Tietokanta;
+import tietokanta.Database;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
@@ -14,7 +14,7 @@ public class Main {
 
         System.out.println("Yhdistetään tietokantaan");
         try {
-            Tietokanta tietokanta = new Tietokanta();
+            Database tietokanta = new Database();
             Kayttoliittyma kl = new Kayttoliittyma(tietokanta);
 
             kl.suorita();
