@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import tietokanta.BookDao;
+import tietokanta.TipDao;
 
 
 @SpringBootApplication
@@ -15,9 +15,10 @@ public class Main {
         System.out.println("Hello Lukuvinkkikirjasto!");
         ApplicationContext context = SpringApplication.run(Main.class, args);
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
-        BookDao bookDao = new BookDao(jdbcTemplate);
-        Kayttoliittyma kl = new Kayttoliittyma(bookDao);
+        TipDao tipDao = new TipDao(jdbcTemplate);
+        Kayttoliittyma kl = new Kayttoliittyma(tipDao);
         kl.suorita();
+        System.exit(0);
     }
 
 }

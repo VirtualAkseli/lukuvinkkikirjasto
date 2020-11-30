@@ -4,9 +4,9 @@ import io.ConsoleIO;
 import io.IO;
 import tietokanta.Dao;
 import vinkkilogic.Book;
+import vinkkilogic.Tip;
 
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,12 +14,12 @@ import static utilities.MappingUtils.toMap;
 
 public class Kayttoliittyma {
 
-    Dao<Book, Long> bookDao;
+    Dao<Tip, Long> tipDao;
     //private final Scanner lukija;
     private IO io;
 
-    public Kayttoliittyma(Dao<Book, Long> bookDao) {
-        this.bookDao = bookDao;
+    public Kayttoliittyma(Dao<Tip, Long> tipDao) {
+        this.tipDao = tipDao;
         this.io = new ConsoleIO();
     }
 
@@ -67,7 +67,7 @@ public class Kayttoliittyma {
         String kirjanNimi = io.readLine("Kirjan nimi:");
         //System.out.println("Kirjailija:");
         String kirjailija = io.readLine("Kirjailija:");
-        bookDao.create(new Book(kirjanNimi, kirjailija));
+        tipDao.create(new Tip(kirjanNimi, kirjailija));
         System.out.println("Lisätty!");
         System.out.println("Kirjan nimi: " + kirjanNimi);
         System.out.println("Kirjailija: " + kirjailija);
@@ -77,8 +77,8 @@ public class Kayttoliittyma {
         System.out.println("Hakusana:");
         String hakusana = io.readLine("Hakusana:");
         System.out.println("Hetaan...");
-        List<Book> byTitle = bookDao.getByValue(toMap("title", hakusana));
-        List<Book> byAuthor = bookDao.getByValue(toMap("author", hakusana));
+        List<Tip> byTitle = tipDao.getByValue(toMap("tipName", hakusana));
+        List<Tip> byAuthor = tipDao.getByValue(toMap("author", hakusana));
         System.out.println("Löytyi " + (byTitle.size() + byAuthor.size()) + " hakutulosta.");
         Stream.concat(byTitle.stream(), byAuthor.stream())
                 .collect(Collectors.toList()).forEach(System.out::println);
@@ -87,6 +87,6 @@ public class Kayttoliittyma {
 
     private void listaa() {
         System.out.println("Kaikki kirjat:");
-        bookDao.list().forEach(System.out::println);
+        tipDao.list().forEach(System.out::println);
     }
 }
