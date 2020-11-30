@@ -1,35 +1,60 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.0'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'java'
-	id 'application'
+    id 'org.springframework.boot' version '2.4.0'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id 'application'
 }
 
 jar {
-	manifest {
-		attributes 'Main-Class': 'controller.Main'
-	}
+    manifest {
+        attributes 'Main-Class': 'controller.Main'
+    }
+}
+project.ext {
+    cucumberVersion = '6.8.1'
+    junitVersion = '4.13'
 }
 
 run {
-	standardInput = System.in
+    standardInput = System.in
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
     jcenter()
 }
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	runtimeOnly 'com.h2database:h2'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'junit:junit:4.13'
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+    useJUnitPlatform()
 }
 
-test {
-	useJUnitPlatform()
+dependencies {
+    testImplementation 'junit:junit:4.13' 
+    compile group: 'com.h2database', name: 'h2', version: '1.4.200'
+    testImplementation 'io.cucumber:cucumber-java:6.8.1'
+    testCompile 'io.cucumber:cucumber-junit:6.8.1'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    runtimeOnly 'com.h2database:h2'
+}
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+task cucumber() {
+  dependsOn assemble, testClasses
+  doLast {
+    javaexec {
+      main = "io.cucumber.core.cli.Main"
+      classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+      args = ['--plugin', 'pretty', '--glue', 'stepdefs', 'src/test/resources']
+        }
+    }
 }
 
 mainClassName = 'controller.Main'
