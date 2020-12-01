@@ -69,7 +69,9 @@ public class UserInterface {
             String command = io.readLine("Valitse vinkin tyyppi numerolla:");
             tipData[0] = giveType(command);
         }
-        tipData = getInput(tipData); //after this tipData has type on 0, author on 1, name on 2, possible identifier on 3, possible url on 4, and comments on 5.
+        tipData = getInput(tipData);
+        //after this tipData has type on 0, author on 1, name on 2, possible identifier on 3, possible url on 4, and comments on 5.
+        //and tipData is ready for controller.
         
         
 //        tipDao.create(new Tip(type, title, author));
