@@ -11,9 +11,8 @@ import static org.junit.Assert.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import tietokanta.BookDao;
 import tietokanta.Dao;
-import vinkkilogic.Book;
+import tietokanta.TipDao;
 
 public class Stepdefs {
 
@@ -25,7 +24,7 @@ public class Stepdefs {
     public void program_starts() {
         ApplicationContext context = SpringApplication.run(Main.class);
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
-        this.bookDao = new BookDao(jdbcTemplate);
+        this.bookDao = new TipDao(jdbcTemplate);
         this.lukija = new Scanner(System.in);
     }
 
