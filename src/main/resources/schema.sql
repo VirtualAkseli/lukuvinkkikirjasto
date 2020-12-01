@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS Tip_courses
     tip_id      BIGINT                  NOT NULL,
     course_id   BIGINT                  NOT NULL,
 
-    FOREIGN KEY (tip_id) REFERENCES Tips (id),
-    FOREIGN KEY (course_id) REFERENCES Courses (id)
+    FOREIGN KEY (tip_id) REFERENCES Tips (id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES Courses (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Tip_tags
@@ -40,6 +40,6 @@ CREATE TABLE IF NOT EXISTS Tip_tags
     tip_id      BIGINT                  NOT NULL,
     tag_id      BIGINT                  NOT NULL,
 
-    FOREIGN KEY (tip_id) REFERENCES Tips (id),
-    FOREIGN KEY (tag_id) REFERENCES Tags (id)
+    FOREIGN KEY (tip_id) REFERENCES Tips (id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES Tags (id) ON DELETE CASCADE
 );

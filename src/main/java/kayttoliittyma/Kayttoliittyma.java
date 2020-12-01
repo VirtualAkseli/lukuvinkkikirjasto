@@ -3,7 +3,6 @@ package kayttoliittyma;
 import io.ConsoleIO;
 import io.IO;
 import tietokanta.Dao;
-import vinkkilogic.Book;
 import vinkkilogic.Tip;
 
 import java.util.List;
