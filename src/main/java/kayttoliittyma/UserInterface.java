@@ -16,9 +16,9 @@ public class UserInterface {
     Dao<Book, Long> bookDao;
     private IO io;
 
-    public UserInterface(Dao<Book, Long> bookDao) {
+    public UserInterface(Dao<Book, Long> bookDao, IO io) {
         this.bookDao = bookDao;
-        this.io = new ConsoleIO();
+        this.io = io;
     }
 
     public void run() {

@@ -14,10 +14,12 @@ public class StubIO implements IO {
         prints = new ArrayList<>();
     }
 
+    @Override
     public void print(String toPrint) {
         prints.add(toPrint);
     }
 
+    @Override
     public int readInt(String prompt) {
         print(prompt);
         return Integer.parseInt(lines.get(i++));
@@ -27,6 +29,7 @@ public class StubIO implements IO {
         return prints;
     }
 
+    @Override
     public String readLine(String prompt) {
         print(prompt);
         if (i < lines.size()) {
