@@ -2,7 +2,6 @@ package stepdefs;
 
 import controller.Main;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
 import java.util.Scanner;
@@ -11,19 +10,24 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import tietokanta.Dao;
+import tietokanta.CourseDao;
+import tietokanta.TagDao;
 import tietokanta.TipDao;
+import vinkkilogic.Tip;
 
 public class Stepdefs {
 
     UserInterface kayttoliittyma;
-    Dao bookDao;
+    Dao<Tip, Long> tipDao;
     Scanner lukija;
 
     @Given("Program starts")
     public void program_starts() {
         ApplicationContext context = SpringApplication.run(Main.class);
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
-        this.bookDao = new TipDao(jdbcTemplate);
+        CourseDao courseDao = new CourseDao(jdbcTemplate);
+        TagDao tagDao = new TagDao(jdbcTemplate);
+        this.tipDao = new TipDao(jdbcTemplate, courseDao, tagDao);
         this.lukija = new Scanner(System.in);
     }
 
