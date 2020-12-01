@@ -16,7 +16,7 @@ public class Main {
         ApplicationContext context = SpringApplication.run(Main.class, args);
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
         TipDao tipDao = new TipDao(jdbcTemplate);
-        UserInterface kl = new UserInterface(bookDao);
+        UserInterface kl = new UserInterface(tipDao);
         kl.run();
     }
 }

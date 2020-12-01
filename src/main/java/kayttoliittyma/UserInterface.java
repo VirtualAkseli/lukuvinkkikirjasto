@@ -63,7 +63,7 @@ public class UserInterface {
     private void add() {
         String title = io.readLine("Kirjan nimi:");
         String author = io.readLine("Kirjailija:");
-        bookDao.create(new Book(title, author));
+        tipDao.create(new Tip(title, author));
         System.out.println("Lisätty!");
         System.out.println("Kirjan nimi: " + title);
         System.out.println("Kirjailija: " + author);
@@ -73,8 +73,8 @@ public class UserInterface {
         System.out.println("Hakusana:");
         String keyword = io.readLine("Hakusana:");
         System.out.println("Haetaan...");
-        List<Book> byTitle = bookDao.getByValue(toMap("title", keyword));
-        List<Book> byAuthor = bookDao.getByValue(toMap("author", keyword));
+        List<Tip> byTitle = tipDao.getByValue(toMap("tip_name", keyword));
+        List<Tip> byAuthor = tipDao.getByValue(toMap("author", keyword));
         System.out.println("Löytyi " + (byTitle.size() + byAuthor.size()) + " hakutulosta.");
         Stream.concat(byTitle.stream(), byAuthor.stream())
                 .collect(Collectors.toList()).forEach(System.out::println);
