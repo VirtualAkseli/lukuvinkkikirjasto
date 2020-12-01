@@ -33,8 +33,10 @@ test {
 dependencies {
     testImplementation 'junit:junit:4.13' 
     compile group: 'com.h2database', name: 'h2', version: '1.4.200'
+    compile 'com.google.guava:guava:23.0'
     testImplementation 'io.cucumber:cucumber-java:6.8.1'
     testCompile 'io.cucumber:cucumber-junit:6.8.1'
+    testCompile 'org.mockito:mockito-core:3.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
