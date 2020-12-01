@@ -11,37 +11,36 @@ import java.util.stream.Stream;
 
 import static utilities.MappingUtils.toMap;
 
-public class Kayttoliittyma {
+public class UserInterface {
 
     Dao<Tip, Long> tipDao;
-    //private final Scanner lukija;
     private IO io;
 
-    public Kayttoliittyma(Dao<Tip, Long> tipDao) {
+    public UserInterface(Dao<Tip, Long> tipDao) {
         this.tipDao = tipDao;
         this.io = new ConsoleIO();
     }
 
-    public void suorita() {
-        boolean jatketaan = true;
-        listaaKomennot();
-        while (jatketaan) {
-            String komento = io.readLine("Anna komento!");
-            jatketaan = suoritaKomento(komento);
+    public void run() {
+        boolean continuing = true;
+        listCommands();
+        while (continuing) {
+            String command = io.readLine("Anna komento!");
+            continuing = runCommand(command);
         }
         System.out.println("Lopetetaan...");
     }
 
-    public Boolean suoritaKomento(String komento) {
-        switch (komento) {
+    public Boolean runCommand(String command) {
+        switch (command) {
             case "lisaa":
-                lisaa();
+                add();
                 return true;
             case "hae":
-                hae();
+                search();
                 return true;
             case "listaa":
-                listaa();
+                list();
                 return true;
             case "x":
                 return false;
@@ -51,7 +50,7 @@ public class Kayttoliittyma {
         }
     }
 
-    private void listaaKomennot() {
+    private void listCommands() {
         System.out.println("");
         System.out.println("Komennot:");
         System.out.println("lisaa = lisää uusi lukuvinkki");
@@ -61,30 +60,28 @@ public class Kayttoliittyma {
         System.out.println("");
     }
 
-    private void lisaa() {
-        //System.out.println("Kirjan nimi:");
-        String kirjanNimi = io.readLine("Kirjan nimi:");
-        //System.out.println("Kirjailija:");
-        String kirjailija = io.readLine("Kirjailija:");
-        tipDao.create(new Tip(kirjanNimi, kirjailija));
+    private void add() {
+        String title = io.readLine("Kirjan nimi:");
+        String author = io.readLine("Kirjailija:");
+        bookDao.create(new Book(title, author));
         System.out.println("Lisätty!");
-        System.out.println("Kirjan nimi: " + kirjanNimi);
-        System.out.println("Kirjailija: " + kirjailija);
+        System.out.println("Kirjan nimi: " + title);
+        System.out.println("Kirjailija: " + author);
     }
 
-    private void hae() {
+    private void search() {
         System.out.println("Hakusana:");
-        String hakusana = io.readLine("Hakusana:");
-        System.out.println("Hetaan...");
-        List<Tip> byTitle = tipDao.getByValue(toMap("tipName", hakusana));
-        List<Tip> byAuthor = tipDao.getByValue(toMap("author", hakusana));
+        String keyword = io.readLine("Hakusana:");
+        System.out.println("Haetaan...");
+        List<Book> byTitle = bookDao.getByValue(toMap("title", keyword));
+        List<Book> byAuthor = bookDao.getByValue(toMap("author", keyword));
         System.out.println("Löytyi " + (byTitle.size() + byAuthor.size()) + " hakutulosta.");
         Stream.concat(byTitle.stream(), byAuthor.stream())
                 .collect(Collectors.toList()).forEach(System.out::println);
         System.out.println("");
     }
 
-    private void listaa() {
+    private void list() {
         System.out.println("Kaikki kirjat:");
         tipDao.list().forEach(System.out::println);
     }

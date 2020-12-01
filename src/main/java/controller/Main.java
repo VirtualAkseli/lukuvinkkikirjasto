@@ -1,6 +1,6 @@
 package controller;
 
-import kayttoliittyma.Kayttoliittyma;
+import kayttoliittyma.UserInterface;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -16,9 +16,7 @@ public class Main {
         ApplicationContext context = SpringApplication.run(Main.class, args);
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
         TipDao tipDao = new TipDao(jdbcTemplate);
-        Kayttoliittyma kl = new Kayttoliittyma(tipDao);
-        kl.suorita();
-        System.exit(0);
+        UserInterface kl = new UserInterface(bookDao);
+        kl.run();
     }
-
 }
