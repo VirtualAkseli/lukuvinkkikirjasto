@@ -17,9 +17,9 @@ public class UserInterface {
     Dao<Tip, Long> tipDao;
     private IO io;
 
-    public UserInterface(Dao<Tip, Long> tipDao) {
+    public UserInterface(Dao<Tip, Long> tipDao, IO io) {
         this.tipDao = tipDao;
-        this.io = new ConsoleIO();
+        this.io = io;
     }
 
     public void run() {

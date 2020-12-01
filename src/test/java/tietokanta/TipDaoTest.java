@@ -9,6 +9,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.mock;
 import static utilities.MappingUtils.toMap;
 
 import vinkkilogic.Tip;
@@ -22,7 +23,7 @@ public class TipDaoTest {
             .setType(EmbeddedDatabaseType.H2)
             .addScript("test_schema.sql").build();
     private JdbcTemplate jdbcTemplate = new JdbcTemplate(db);
-    private TipDao tipDao = new TipDao(jdbcTemplate);
+    private TipDao tipDao = new TipDao(jdbcTemplate, mock(CourseDao.class), mock(TagDao.class));
 
     @Before
     public void before() {
