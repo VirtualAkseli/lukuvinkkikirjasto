@@ -14,14 +14,14 @@ import kayttoliittyma.UserInterface;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import tietokanta.BookDao;
 import tietokanta.Dao;
+import tietokanta.TipDao;
 
 public class Stepdefs {
 
     UserInterface kayttoliittyma;
     StubIO stubIO;
-    BookDao bookDao;
+    TipDao tipDao;
     ArrayList<String> inputLines;
     ApplicationContext context;
     JdbcTemplate jdbcTemplate;
@@ -31,7 +31,7 @@ public class Stepdefs {
         this.inputLines = new ArrayList<>();
         this.context = SpringApplication.run(Main.class);
         this.jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
-        this.bookDao = new BookDao(jdbcTemplate);
+        this.tipDao = new TipDao(jdbcTemplate);
     }
 
     @Given("Program starts")
@@ -41,7 +41,7 @@ public class Stepdefs {
         inputLines.add("x");
         
         this.stubIO = new StubIO(inputLines);
-        this.kayttoliittyma = new UserInterface(bookDao, stubIO);
+        this.kayttoliittyma = new UserInterface(tipDao, stubIO);
         kayttoliittyma.run();
     }
 

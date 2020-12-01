@@ -1,16 +1,18 @@
 CREATE TABLE IF NOT EXISTS Tips
 (
     id              IDENTITY,
-    tip_type        TEXT                CHECK tip_type IN ('Book', 'Video', 'Blogpost', 'Podcast'),
+    tip_type        TEXT                CHECK tip_type IN ('book', 'video', 'blogpost', 'podcast'),
     author          TEXT,
     tip_name        TEXT,
     identifier      TEXT,               /* For example ISBN, ISRC, DOI etc. */
     url             TEXT,
-    tags            TEXT,
-    comments        TEXT,
+    comments        TEXT
 );
 
+/*
+DROP INDEX IF EXISTS type_index;
 CREATE INDEX type_index ON Tips (tip_type);
+*/
 
 CREATE TABLE IF NOT EXISTS Courses
 (
@@ -21,12 +23,11 @@ CREATE TABLE IF NOT EXISTS Courses
 CREATE TABLE IF NOT EXISTS Tags
 (
     id              IDENTITY,
-    tag_name        TEXT                NOT NULL,
+    tag_name        TEXT                NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Tip_courses
 (
-    id          IDENTITY,
     tip_id      BIGINT                  NOT NULL,
     course_id   BIGINT                  NOT NULL,
 
@@ -36,8 +37,6 @@ CREATE TABLE IF NOT EXISTS Tip_courses
 
 CREATE TABLE IF NOT EXISTS Tip_tags
 (
-    id          IDENTITY,
-    course_name TEXT,
     tip_id      BIGINT                  NOT NULL,
     tag_id      BIGINT                  NOT NULL,
 

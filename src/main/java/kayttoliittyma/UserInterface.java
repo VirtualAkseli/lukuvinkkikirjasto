@@ -3,7 +3,7 @@ package kayttoliittyma;
 import io.ConsoleIO;
 import io.IO;
 import tietokanta.Dao;
-import vinkkilogic.Book;
+import vinkkilogic.Tip;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,11 +13,11 @@ import static utilities.MappingUtils.toMap;
 
 public class UserInterface {
 
-    Dao<Book, Long> bookDao;
+    Dao<Tip, Long> tipDao;
     private IO io;
 
-    public UserInterface(Dao<Book, Long> bookDao, IO io) {
-        this.bookDao = bookDao;
+    public UserInterface(Dao<Tip, Long> tipDao, IO io) {
+        this.tipDao = tipDao;
         this.io = io;
     }
 
@@ -63,7 +63,7 @@ public class UserInterface {
     private void add() {
         String title = io.readLine("Kirjan nimi:");
         String author = io.readLine("Kirjailija:");
-        bookDao.create(new Book(title, author));
+        tipDao.create(new Tip(title, author));
         System.out.println("Lisätty!");
         System.out.println("Kirjan nimi: " + title);
         System.out.println("Kirjailija: " + author);
@@ -73,8 +73,8 @@ public class UserInterface {
         System.out.println("Hakusana:");
         String keyword = io.readLine("Hakusana:");
         System.out.println("Haetaan...");
-        List<Book> byTitle = bookDao.getByValue(toMap("title", keyword));
-        List<Book> byAuthor = bookDao.getByValue(toMap("author", keyword));
+        List<Tip> byTitle = tipDao.getByValue(toMap("tip_name", keyword));
+        List<Tip> byAuthor = tipDao.getByValue(toMap("author", keyword));
         System.out.println("Löytyi " + (byTitle.size() + byAuthor.size()) + " hakutulosta.");
         Stream.concat(byTitle.stream(), byAuthor.stream())
                 .collect(Collectors.toList()).forEach(System.out::println);
@@ -83,6 +83,6 @@ public class UserInterface {
 
     private void list() {
         System.out.println("Kaikki kirjat:");
-        bookDao.list().forEach(System.out::println);
+        tipDao.list().forEach(System.out::println);
     }
 }

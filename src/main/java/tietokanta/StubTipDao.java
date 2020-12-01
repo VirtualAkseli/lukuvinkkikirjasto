@@ -4,14 +4,15 @@ package tietokanta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import vinkkilogic.Book;
+
+import vinkkilogic.Tip;
 
 public class StubTipDao implements Dao {
 
-    ArrayList<Book> bookList;
+    ArrayList<Tip> bookList;
 
-    public Long create(Book book) {
-        bookList.add(book);
+    public Long create(Tip tip) {
+        bookList.add(tip);
         return Long.valueOf(1);
     }
 
