@@ -1,5 +1,6 @@
 package controller;
 
+import io.ConsoleIO;
 import kayttoliittyma.UserInterface;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,10 +18,11 @@ public class Main {
         System.out.println("Hello Lukuvinkkikirjasto!");
         ApplicationContext context = SpringApplication.run(Main.class, args);
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
+
         CourseDao courseDao = new CourseDao(jdbcTemplate);
         TagDao tagDao = new TagDao(jdbcTemplate);
         TipDao tipDao = new TipDao(jdbcTemplate, courseDao, tagDao);
-        UserInterface kl = new UserInterface(tipDao);
+        UserInterface kl = new UserInterface(tipDao, new ConsoleIO());
         kl.run();
     }
 }
