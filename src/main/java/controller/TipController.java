@@ -1,7 +1,7 @@
 package controller;
 
 import java.util.*;
-import vinkkilogic.*;
+import tiplogic.*;
 
 public class TipController {
     private ArrayList<Vinkki> tips;
