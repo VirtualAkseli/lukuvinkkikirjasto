@@ -14,16 +14,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import tietokanta.Dao;
+import tietokanta.StubTipDao;
 import tietokanta.CourseDao;
 import tietokanta.TagDao;
-import tietokanta.TipDao;
 import vinkkilogic.Tip;
 
 public class Stepdefs {
 
     UserInterface kayttoliittyma;
     StubIO stubIO;
-    TipDao tipDao;
+    StubTipDao std;
     ArrayList<String> inputLines;
     ApplicationContext context;
     JdbcTemplate jdbcTemplate;
@@ -31,27 +31,28 @@ public class Stepdefs {
     @Before
     public void setup() {
         this.inputLines = new ArrayList<>();
-        this.context = SpringApplication.run(Main.class);
-        this.jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
-        this.tipDao = new TipDao(jdbcTemplate);
+        //this.context = SpringApplication.run(Main.class);
+        //this.jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
+        this.std = new StubTipDao();
     }
 
     @Given("Program starts")
     public void program_starts() {
         // for now, we need to tell the UI to quit
-        // otherwise, it will keep printing "anna komento"
-        inputLines.add("x");
+        // otherwise, it will keep printing the commands
+        inputLines.add("4");
         
         this.stubIO = new StubIO(inputLines);
-        this.kayttoliittyma = new UserInterface(tipDao, stubIO);
+        this.kayttoliittyma = new UserInterface(std, stubIO);
         kayttoliittyma.run();
+      }
 
 
     @Then("The output should be {string}")
     public void the_output_should_be(String expected) {
         String printed = "";
         for (String line: stubIO.getPrints()) {
-            System.out.println(line);
+            // System.out.println("line: " + line);
             printed += line;
         }
         assertTrue(printed.contains(expected));

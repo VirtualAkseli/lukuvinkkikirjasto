@@ -1,4 +1,3 @@
-
 package tietokanta;
 
 import java.util.ArrayList;
@@ -7,48 +6,43 @@ import java.util.Map;
 
 import vinkkilogic.Tip;
 
-public class StubTipDao implements Dao {
+public class StubTipDao implements Dao<Tip, Long> {
 
-    ArrayList<Tip> bookList;
-
-    public Long create(Tip tip) {
-        bookList.add(tip);
-        return Long.valueOf(1);
+    @Override
+    public Tip get(Long key) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
-    public Object get(Object key) {
+    public void update(Tip object) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void delete(Long key) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public Long create(Tip object) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List getByValue(Map map) {
+    public List<Tip> getByValue(Map<String, Object> map) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void update(Object object) {
+    public void deleteByValue(Map<String, Object> map) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void delete(Object key) {
+    public List<Tip> list() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public void deleteByValue(Map map) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List list() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object create(Object object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }
