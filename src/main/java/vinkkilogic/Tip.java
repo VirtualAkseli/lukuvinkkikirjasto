@@ -16,7 +16,7 @@ public class Tip implements Mappable {
     public Tip() {
     }
 
-    public Tip(String tipName, String author) {
+    public Tip(String author, String tipName) {
         this.tipName = tipName;
         this.author = author;
     }
