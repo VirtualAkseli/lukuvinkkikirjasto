@@ -25,9 +25,7 @@ public class Stepdefs {
     public void program_starts() {
         ApplicationContext context = SpringApplication.run(Main.class);
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
-        CourseDao courseDao = new CourseDao(jdbcTemplate);
-        TagDao tagDao = new TagDao(jdbcTemplate);
-        this.tipDao = new TipDao(jdbcTemplate, courseDao, tagDao);
+        this.tipDao = new TipDao(jdbcTemplate);
         this.lukija = new Scanner(System.in);
     }
 

@@ -1,5 +1,6 @@
 package utilities;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,6 +22,20 @@ public final class MappingUtils {
                 .mapToObj(i -> new Object[]{p[i * 2], p[i * 2 + 1]})
                 .filter((e) -> e[1] != null)
                 .collect(Collectors.toMap(e -> String.valueOf(e[0]), e -> (V) e[1]));
+    }
+
+    /**
+     * Luo annetusta Map-oliosta ja olioargumenttipareista uuden Map-olion sulauttamalla argumenttiparit annettuun
+     * Map-olioon. Käyttää sisäisesti Map-rajapinnan merge()-metodia.
+     *
+     * @param map1 Map-olio, johon argumenttiparit sulautetaan
+     * @param p "avain1", arvo1, "avain2", arvo2 ...
+     * @return Map
+     */
+    public static <V> Map<String, V> toMap(Map<String, V> map1, Object... p) {
+        Map<String, V> map2 = toMap(p);
+        map2.forEach((k, v) -> map1.merge(k, v, (v1, v2) -> v2));
+        return map1;
     }
 
     /**

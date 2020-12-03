@@ -5,10 +5,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import vinkkilogic.Tag;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 
 import static utilities.MappingUtils.keysToLowerUnderscore;
 import static utilities.MappingUtils.toLowerUnderscore;
@@ -38,28 +36,23 @@ public class TagDao implements Dao<Tag, Long> {
 
     @Override
     public List<Tag> getByValue(Map<String, Object> map) {
+        return getByValue(map, false);
+    }
+
+    @Override
+    public List<Tag> getByValue(Map<String, Object> map, Boolean exactMatch) {
         Map.Entry<String, Object> entry = map.entrySet().iterator().next();
         return jdbcTemplate.query(
                 "SELECT * FROM Tags WHERE "  + toLowerUnderscore(entry.getKey()) + " LIKE ?",
                 new BeanPropertyRowMapper<>(Tag.class),
-                "%" + entry.getValue() + "%"
+                exactMatch ? "%" + entry.getValue() + "%" : entry.getValue()
         );
     }
 
     @Override
     public void update(Tag tag) {
-        StringJoiner str = new StringJoiner(" = ?, ", "UPDATE Tags SET ", " = ? WHERE id = ?");
-        Map<String, Object> map = tag.getPropertyMap();
-        map.remove("id");
-        map.remove("courses"); //NOT SAVED FOR NOW
-        map.remove("tags"); //NOT SAVED FOR NOW
-        ArrayList<Object> valueList = new ArrayList<>();
-        map.forEach((k, v) -> {
-            str.add(toLowerUnderscore(k));
-            valueList.add(v);
-        });
-        valueList.add(tag.getId());
-        jdbcTemplate.update(str.toString(), valueList.toArray());
+        Map<String, ?> map = getUpdateMap("Tags", tag);
+        jdbcTemplate.update((String) map.get("queryString"), (Object[]) map.get("valueList"));
     }
 
     @Override
@@ -69,6 +62,11 @@ public class TagDao implements Dao<Tag, Long> {
 
     @Override
     public void deleteByValue(Map<String, Object> map) {
+        deleteByValue(map, false);
+    }
+
+    @Override
+    public void deleteByValue(Map<String, Object> map, Boolean exactMatch) {
         Map.Entry<String, Object> entry = map.entrySet().iterator().next();
         jdbcTemplate.update(
                 "DELETE FROM Tags WHERE " + toLowerUnderscore(entry.getKey()) + " LIKE ?",

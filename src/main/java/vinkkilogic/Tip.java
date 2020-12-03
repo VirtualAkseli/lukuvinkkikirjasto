@@ -1,5 +1,6 @@
 package vinkkilogic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tip implements Mappable {
@@ -10,8 +11,8 @@ public class Tip implements Mappable {
      String identifier;
      String url;
      String comments;
-     List<Tag> tags;
-     List<Course> courses;
+     List<Tag> tags = new ArrayList<>();
+     List<Course> courses = new ArrayList<>();
 
     public Tip() {
     }
@@ -19,6 +20,10 @@ public class Tip implements Mappable {
     public Tip(String tipName, String author) {
         this.tipName = tipName;
         this.author = author;
+    }
+
+    public Tip(String tipType) {
+        this.tipType = tipType;
     }
 
     public Long getId() {
@@ -97,4 +102,5 @@ public class Tip implements Mappable {
     public String toString() {
         return "Tip{" + "id=" + id + ", tipType='" + tipType + '\'' + ", author='" + author + '\'' + ", tipName='" + tipName + '\'' + ", identifier='" + identifier + '\'' + ", url='" + url + '\'' + ", comments='" + comments + '\'' + ", tags=" + tags + ", courses=" + courses + '}';
     }
+
 }

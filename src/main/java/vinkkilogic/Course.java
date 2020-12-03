@@ -9,6 +9,10 @@ public class Course implements Mappable {
         this.courseName = courseName;
     }
 
+    public Course(String courseName) {
+        this.courseName = courseName;
+    }
+
     public Course() {
     }
 

@@ -19,7 +19,7 @@ public class Main {
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
         CourseDao courseDao = new CourseDao(jdbcTemplate);
         TagDao tagDao = new TagDao(jdbcTemplate);
-        TipDao tipDao = new TipDao(jdbcTemplate, courseDao, tagDao);
+        TipDao tipDao = new TipDao(jdbcTemplate);
         UserInterface kl = new UserInterface(tipDao);
         kl.run();
     }

@@ -12,6 +12,10 @@ public class Tag implements Mappable {
         this.tagName = tagName;
     }
 
+    public Tag(String tagName) {
+        this.tagName = tagName;
+    }
+
     public Long getId() {
         return id;
     }

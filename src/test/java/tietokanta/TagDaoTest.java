@@ -20,22 +20,13 @@ import static utilities.MappingUtils.toMap;
 public class TagDaoTest {
     private EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
             .setType(EmbeddedDatabaseType.H2)
-            .addScript("test_schema.sql").build();
+            .addScript("tags.sql").build();
     private JdbcTemplate jdbcTemplate = new JdbcTemplate(db);
     private TagDao tagDao = new TagDao(jdbcTemplate);
 
     @Before
     public void before() {
-        jdbcTemplate.execute(
-                "SET REFERENTIAL_INTEGRITY FALSE;" +
-                        "TRUNCATE TABLE Tips; " +
-                        "ALTER TABLE Tips ALTER COLUMN id RESTART WITH 1;" +
-                        "TRUNCATE TABLE Tags; " +
-                        "ALTER TABLE Tags ALTER COLUMN id RESTART WITH 1;" +
-                        "TRUNCATE TABLE Tags; " +
-                        "ALTER TABLE Tags ALTER COLUMN id RESTART WITH 1;" +
-                        "SET REFERENTIAL_INTEGRITY TRUE "
-        );
+        jdbcTemplate.execute("TRUNCATE TABLE Tags; ALTER TABLE Tags ALTER COLUMN id RESTART WITH 1;");
     }
 
     @Test
