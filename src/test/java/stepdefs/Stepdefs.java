@@ -1,23 +1,19 @@
 package stepdefs;
 
 import controller.Main;
+import database.StubTipDao;
 import io.StubIO;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import java.util.ArrayList;
-import static org.junit.Assert.*;
-
-import java.util.Scanner;
-import kayttoliittyma.UserInterface;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import tietokanta.Dao;
-import tietokanta.StubTipDao;
-import tietokanta.CourseDao;
-import tietokanta.TagDao;
-import vinkkilogic.Tip;
+import userinterface.UserInterface;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertTrue;
 
 public class Stepdefs {
 
@@ -38,15 +34,21 @@ public class Stepdefs {
 
     @Given("Program starts")
     public void program_starts() {
+
+        ApplicationContext context = SpringApplication.run(Main.class);
+        JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
+        //this.tipDao = new TipDao(jdbcTemplate);
+        //this.lukija = new Scanner(System.in);
+
         // for now, we need to tell the UI to quit
         // otherwise, it will keep printing the commands
         inputLines.add("4");
-        
+
         this.stubIO = new StubIO(inputLines);
         this.kayttoliittyma = new UserInterface(std, stubIO);
         kayttoliittyma.run();
-      }
 
+    }
 
     @Then("The output should be {string}")
     public void the_output_should_be(String expected) {

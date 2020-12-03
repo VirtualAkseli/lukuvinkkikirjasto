@@ -1,15 +1,13 @@
 package controller;
 
+import database.Dao;
+import database.TipDao;
 import io.ConsoleIO;
-import kayttoliittyma.UserInterface;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import tietokanta.CourseDao;
-import tietokanta.TagDao;
-import tietokanta.TipDao;
-
+import userinterface.UserInterface;
 
 @SpringBootApplication
 public class Main {
@@ -19,9 +17,7 @@ public class Main {
         ApplicationContext context = SpringApplication.run(Main.class, args);
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
 
-        CourseDao courseDao = new CourseDao(jdbcTemplate);
-        TagDao tagDao = new TagDao(jdbcTemplate);
-        TipDao tipDao = new TipDao(jdbcTemplate, courseDao, tagDao);
+        Dao tipDao = new TipDao(jdbcTemplate);
         UserInterface kl = new UserInterface(tipDao, new ConsoleIO());
         kl.run();
     }
