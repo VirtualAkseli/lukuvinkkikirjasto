@@ -1,4 +1,4 @@
-package tietokanta;
+package database;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import vinkkilogic.Tag;
+import tiplogic.Tag;
 
 import java.util.List;
 import java.util.function.Function;

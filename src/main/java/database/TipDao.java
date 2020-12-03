@@ -1,13 +1,13 @@
-package tietokanta;
+package database;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.transaction.annotation.Transactional;
-import vinkkilogic.Course;
-import vinkkilogic.Mappable;
-import vinkkilogic.Tag;
-import vinkkilogic.Tip;
+import tiplogic.Course;
+import tiplogic.Mappable;
+import tiplogic.Tag;
+import tiplogic.Tip;
 
 import java.util.List;
 import java.util.Map;

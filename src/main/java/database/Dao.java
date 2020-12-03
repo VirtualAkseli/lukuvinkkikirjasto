@@ -1,6 +1,6 @@
-package tietokanta;
+package database;
 
-import vinkkilogic.Mappable;
+import tiplogic.Mappable;
 
 import java.util.*;
 

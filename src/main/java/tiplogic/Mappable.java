@@ -1,4 +1,4 @@
-package vinkkilogic;
+package tiplogic;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package tietokanta;
+package database;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -6,18 +6,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static utilities.MappingUtils.toMap;
-
-import vinkkilogic.Course;
-import vinkkilogic.Tag;
-import vinkkilogic.Tip;
+import tiplogic.Course;
+import tiplogic.Tag;
+import tiplogic.Tip;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static utilities.MappingUtils.toMap;
 
 public class TipDaoJoinTablesTest {
     private EmbeddedDatabase db = new EmbeddedDatabaseBuilder()

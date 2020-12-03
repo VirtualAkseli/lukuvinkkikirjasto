@@ -1,4 +1,4 @@
-package vinkkilogic;
+package tiplogic;
 
 public class Tag implements Mappable {
     Long id;

@@ -1,4 +1,4 @@
-package vinkkilogic;
+package tiplogic;
 
 public class Course implements Mappable {
     Long id;
