@@ -62,6 +62,7 @@ public class DaoIntegrationTest {
         } catch (IndexOutOfBoundsException ignored) { }
         tip1.getCourses().remove(0);
         tipDao.update(tip1);
+        tip1 = tipDao.get(tip1.getId());
         assertThat(tip1.getCourses().size(), is(1));
         assertThat(tip1.getCourses().get(0).getCourseName(), is("Course2"));
         tipDao.delete(3L);
