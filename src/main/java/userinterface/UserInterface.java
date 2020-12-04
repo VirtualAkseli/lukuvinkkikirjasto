@@ -59,38 +59,38 @@ public class UserInterface {
         io.print("4. Lopeta");
         io.print("");
     }
-    
+
     private void add() {
         String[] tipData = new String[6];
         Arrays.fill(tipData, "");
-        while(tipData[0].equals("")){
+        while (tipData[0].equals("")) {
             listTypes();
             String command = io.readLine("Valitse vinkin tyyppi numerolla:");
             tipData[0] = giveType(command);
         }
         if (tipData[0].equals("cancel")) {
-        return;}
+            return;
+        }
         tipData = getInput(tipData);
         //after this tipData has type on 0, author on 1, name on 2, possible identifier on 3, possible url on 4, and comments on 5.
         //and tipData is ready for controller.
-        
-        
+
 //        tipDao.create(new Tip(type, title, author));
 //        System.out.println("Lisätty!");
 //        System.out.println("Kirjan nimi: " + title);
 //        System.out.println("Kirjailija: " + author);
     }
 
-        private void listTypes(){
+    private void listTypes() {
         io.print("");
         io.print("1. Kirja");
         io.print("2. Podcast");
         io.print("3. Blogi");
-       //io.print("4. Video"); 
+        //io.print("4. Video"); 
         io.print("5. Peruuta");
         io.print("");
     }
-    
+
     public String giveType(String command) {
         switch (command) {
             case "1":
@@ -108,60 +108,68 @@ public class UserInterface {
                 return "";
         }
     }
-    
-    public String[] getInput(String[] tipData){
+
+    public String[] getInput(String[] tipData) {
 
         tipData = getMandatoryInfo(tipData);
-        while(true){
+        while (true) {
             io.print("1. Kyllä");
             io.print("2. En");
             String command = io.readLine("Haluatko antaa lisätietoja?");
-            if(command.equals("2")) break;
-            else {
+            if (command.equals("2")) {
+                break;
+            } else {
                 io.print("Vastaa haluamiisi lisätietokohtiin:");
                 tipData = getAdditionalInfo(tipData);
                 break;
             }
-            
+
         }
         io.print("");
         io.print("1. Kyllä");
         io.print("2. Ei");
         String command = io.readLine("Tallennetaanko vinkki näillä tiedoilla?");
-        if(command.equals("1")) return tipData;
-        else {
-        return getInput(tipData);
+        if (command.equals("1")) {
+            return tipData;
+        } else {
+            return getInput(tipData);
         }
     }
-    
-    public String[] getMandatoryInfo(String[] tipData){
+
+    public String[] getMandatoryInfo(String[] tipData) {
         io.print("Vastaathan kaikkiin kohtiin.");
         io.print("");
-        switch(tipData[0]){
+        switch (tipData[0]) {
             case "book":
                 tipData[1] = io.readLine("Kirjailija:");
                 tipData[2] = io.readLine("Kirjan nimi:");
-                if(tipData[1].equals("") || tipData[2].equals("")) tipData = getMandatoryInfo(tipData);
+                if (tipData[1].equals("") || tipData[2].equals("")) {
+                    tipData = getMandatoryInfo(tipData);
+                }
                 return tipData;
             case "podcast":
                 tipData[2] = io.readLine("Podcastin nimi:");
                 tipData[4] = io.readLine("Podcastin URL:");
                 tipData[5] = io.readLine("Kommentti:");
-                if(tipData[2].equals("") || tipData[4].equals("") || tipData[5].equals("")) tipData = getMandatoryInfo(tipData);
+                if (tipData[2].equals("") || tipData[4].equals("") || tipData[5].equals("")) {
+                    tipData = getMandatoryInfo(tipData);
+                }
                 return tipData;
             case "blogpost":
                 tipData[2] = io.readLine("Blogin nimi:");
                 tipData[4] = io.readLine("Blogin URL:");
-                if(tipData[2].equals("") || tipData[4].equals("")) tipData = getMandatoryInfo(tipData);
+                if (tipData[2].equals("") || tipData[4].equals("")) {
+                    tipData = getMandatoryInfo(tipData);
+                }
                 return tipData;
             default:
                 return tipData;
-        }          
+        }
     }
-    
-    public String[] getAdditionalInfo(String[] tipData){
-        switch(tipData[0]){
-           case "book":
+
+    public String[] getAdditionalInfo(String[] tipData) {
+        switch (tipData[0]) {
+            case "book":
                 tipData[3] = io.readLine("ISBN:");
                 tipData[5] = io.readLine("Kommentti:");
                 return tipData;
@@ -177,7 +185,6 @@ public class UserInterface {
                 return tipData;
         }
     }
-
 
     private void search() {
         io.print("Hakusana:");
