@@ -1,4 +1,4 @@
-package vinkkilogic;
+package tiplogic;
 
 public class Tag implements Mappable {
     Long id;
@@ -9,6 +9,10 @@ public class Tag implements Mappable {
 
     public Tag(Long id, String tagName) {
         this.id = id;
+        this.tagName = tagName;
+    }
+
+    public Tag(String tagName) {
         this.tagName = tagName;
     }
 

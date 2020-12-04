@@ -1,11 +1,10 @@
-package kayttoliittyma;
+package userinterface;
 
-import io.ConsoleIO;
 import io.IO;
-import java.util.Arrays;
-import tietokanta.Dao;
-import vinkkilogic.Tip;
+import database.Dao;
+import tiplogic.Tip;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
