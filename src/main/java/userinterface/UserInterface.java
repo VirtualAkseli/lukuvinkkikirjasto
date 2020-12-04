@@ -28,7 +28,7 @@ public class UserInterface {
             String command = io.readLine("Valitse toiminto numerolla:");
             continuing = runCommand(command);
         }
-        System.out.println("Lopetetaan...");
+        io.print("Lopetetaan...");
     }
 
     public Boolean runCommand(String command) {
@@ -45,19 +45,19 @@ public class UserInterface {
             case "4":
                 return false;
             default:
-                System.out.println("Virheellinen valinta. Yritä uudestaan.");
+                io.print("Virheellinen valinta. Yritä uudestaan.");
                 return true;
         }
     }
 
     private void listCommands() {
-        System.out.println("");
-        System.out.println("Komennot:");
-        System.out.println("1. Lisää uusi lukuvinkki");
-        System.out.println("2. Hae lukuvinkkejä");
-        System.out.println("3. Listaa tallennetut lukuvinkit");
-        System.out.println("4. Lopeta");
-        System.out.println("");
+        io.print("");
+        io.print("Komennot:");
+        io.print("1. Lisää uusi lukuvinkki");
+        io.print("2. Hae lukuvinkkejä");
+        io.print("3. Listaa tallennetut lukuvinkit");
+        io.print("4. Lopeta");
+        io.print("");
     }
     
     private void add() {
@@ -68,6 +68,8 @@ public class UserInterface {
             String command = io.readLine("Valitse vinkin tyyppi numerolla:");
             tipData[0] = giveType(command);
         }
+        if (tipData[0].equals("cancel")) {
+        return;}
         tipData = getInput(tipData);
         //after this tipData has type on 0, author on 1, name on 2, possible identifier on 3, possible url on 4, and comments on 5.
         //and tipData is ready for controller.
@@ -80,13 +82,13 @@ public class UserInterface {
     }
 
         private void listTypes(){
-        System.out.println("");
-        System.out.println("1. Kirja");
-        System.out.println("2. Podcast");
-        System.out.println("3. Blogi");
-       //System.out.println("4. Video"); 
-        System.out.println("5. Peruuta");
-        System.out.println("");
+        io.print("");
+        io.print("1. Kirja");
+        io.print("2. Podcast");
+        io.print("3. Blogi");
+       //io.print("4. Video"); 
+        io.print("5. Peruuta");
+        io.print("");
     }
     
     public String giveType(String command) {
@@ -99,8 +101,10 @@ public class UserInterface {
                 return "blogpost";
 //            case "4":
 //                return "video";
+            case "5":
+                return "cancel";
             default:
-                System.out.println("Virheellinen valinta.");
+                io.print("Virheellinen valinta.");
                 return "";
         }
     }
@@ -109,20 +113,20 @@ public class UserInterface {
 
         tipData = getMandatoryInfo(tipData);
         while(true){
-            System.out.println("1. Kyllä");
-            System.out.println("2. En");
+            io.print("1. Kyllä");
+            io.print("2. En");
             String command = io.readLine("Haluatko antaa lisätietoja?");
             if(command.equals("2")) break;
             else {
-                System.out.println("Vastaa haluamiisi lisätietokohtiin:");
+                io.print("Vastaa haluamiisi lisätietokohtiin:");
                 tipData = getAdditionalInfo(tipData);
                 break;
             }
             
         }
-        System.out.println("");
-        System.out.println("1. Kyllä");
-        System.out.println("2. Ei");
+        io.print("");
+        io.print("1. Kyllä");
+        io.print("2. Ei");
         String command = io.readLine("Tallennetaanko vinkki näillä tiedoilla?");
         if(command.equals("1")) return tipData;
         else {
@@ -131,8 +135,8 @@ public class UserInterface {
     }
     
     public String[] getMandatoryInfo(String[] tipData){
-        System.out.println("Vastaathan kaikkiin kohtiin.");
-        System.out.println("");
+        io.print("Vastaathan kaikkiin kohtiin.");
+        io.print("");
         switch(tipData[0]){
             case "book":
                 tipData[1] = io.readLine("Kirjailija:");
@@ -176,19 +180,19 @@ public class UserInterface {
 
 
     private void search() {
-        System.out.println("Hakusana:");
+        io.print("Hakusana:");
         String keyword = io.readLine("Hakusana:");
-        System.out.println("Haetaan...");
+        io.print("Haetaan...");
         List<Tip> byTitle = tipDao.getByValue(toMap("tip_name", keyword));
         List<Tip> byAuthor = tipDao.getByValue(toMap("author", keyword));
-        System.out.println("Löytyi " + (byTitle.size() + byAuthor.size()) + " hakutulosta.");
+        io.print("Löytyi " + (byTitle.size() + byAuthor.size()) + " hakutulosta.");
         Stream.concat(byTitle.stream(), byAuthor.stream())
-                .collect(Collectors.toList()).forEach(System.out::println);
-        System.out.println("");
+                .collect(Collectors.toList()).forEach(item -> io.print(item.toString()));
+        io.print("");
     }
 
     private void list() {
-        System.out.println("Kaikki kirjat:");
-        tipDao.list().forEach(System.out::println);
+        io.print("Kaikki kirjat:");
+        tipDao.list().forEach(item -> io.print(item.toString()));
     }
 }
