@@ -1,4 +1,4 @@
-package tietokanta;
+package database;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import vinkkilogic.Course;
+import tiplogic.Course;
 
 import java.util.List;
 import java.util.function.Function;
@@ -20,22 +20,13 @@ import static utilities.MappingUtils.toMap;
 public class CourseDaoTest {
     private EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
             .setType(EmbeddedDatabaseType.H2)
-            .addScript("test_schema.sql").build();
+            .addScript("courses.sql").build();
     private JdbcTemplate jdbcTemplate = new JdbcTemplate(db);
     private CourseDao courseDao = new CourseDao(jdbcTemplate);
 
     @Before
     public void before() {
-        jdbcTemplate.execute(
-                "SET REFERENTIAL_INTEGRITY FALSE;" +
-                        "TRUNCATE TABLE Tips; " +
-                        "ALTER TABLE Tips ALTER COLUMN id RESTART WITH 1;" +
-                        "TRUNCATE TABLE Courses; " +
-                        "ALTER TABLE Courses ALTER COLUMN id RESTART WITH 1;" +
-                        "TRUNCATE TABLE Tags; " +
-                        "ALTER TABLE Tags ALTER COLUMN id RESTART WITH 1;" +
-                        "SET REFERENTIAL_INTEGRITY TRUE "
-        );
+        jdbcTemplate.execute("TRUNCATE TABLE Courses; ALTER TABLE Courses ALTER COLUMN id RESTART WITH 1;");
     }
 
     @Test

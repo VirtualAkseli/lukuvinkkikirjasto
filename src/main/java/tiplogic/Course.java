@@ -1,4 +1,4 @@
-package vinkkilogic;
+package tiplogic;
 
 public class Course implements Mappable {
     Long id;
@@ -6,6 +6,10 @@ public class Course implements Mappable {
 
     public Course(Long id, String courseName) {
         this.id = id;
+        this.courseName = courseName;
+    }
+
+    public Course(String courseName) {
         this.courseName = courseName;
     }
 

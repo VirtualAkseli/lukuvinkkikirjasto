@@ -1,13 +1,9 @@
 package controller;
 
-import java.util.*;
-<<<<<<< HEAD
-
-import tietokanta.*;
-import vinkkilogic.*;
-=======
 import tiplogic.*;
->>>>>>> 9af3bcf23654585874f68ad950662ffdce7cb551
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TipController {
     private ArrayList<Tip> tips;

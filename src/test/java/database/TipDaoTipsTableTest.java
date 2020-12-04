@@ -1,4 +1,4 @@
-package tietokanta;
+package database;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,36 +7,38 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.mock;
-import static utilities.MappingUtils.toMap;
+import tiplogic.Course;
+import tiplogic.Tag;
+import tiplogic.Tip;
 
-import vinkkilogic.Tip;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
-public class TipDaoTest {
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+import static utilities.MappingUtils.toMap;
+
+public class TipDaoTipsTableTest {
     private EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
             .setType(EmbeddedDatabaseType.H2)
-            .addScript("test_schema.sql").build();
+            .addScript("tips.sql").build();
     private JdbcTemplate jdbcTemplate = new JdbcTemplate(db);
-    private TipDao tipDao = new TipDao(jdbcTemplate, mock(CourseDao.class), mock(TagDao.class));
+    private TipDao tipDao;
 
     @Before
     public void before() {
-        jdbcTemplate.execute(
-                "SET REFERENTIAL_INTEGRITY FALSE;" +
-                "TRUNCATE TABLE Tips; " +
-                        "ALTER TABLE Tips ALTER COLUMN id RESTART WITH 1;" +
-                "TRUNCATE TABLE Courses; " +
-                        "ALTER TABLE Courses ALTER COLUMN id RESTART WITH 1;" +
-                "TRUNCATE TABLE Tags; " +
-                        "ALTER TABLE Tags ALTER COLUMN id RESTART WITH 1;" +
-                "SET REFERENTIAL_INTEGRITY TRUE "
-        );
+        jdbcTemplate.execute("TRUNCATE TABLE Tips; ALTER TABLE Tips ALTER COLUMN id RESTART WITH 1;");
+        tipDao = spy(new TipDao(jdbcTemplate));
+        doNothing().when(tipDao).saveListProperties(any(Tip.class));
+        doNothing().when(tipDao).deleteTipCourses(anyLong());
+        doNothing().when(tipDao).deleteTipTags(anyLong());
+        doReturn(new ArrayList<Course>()).when(tipDao).getTipCourses(anyLong());
+        doReturn(new ArrayList<Tag>()).when(tipDao).getTipTags(anyLong());
     }
 
     @Test

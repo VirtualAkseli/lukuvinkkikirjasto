@@ -16,6 +16,7 @@ public class StubIO implements IO {
 
     @Override
     public void print(String toPrint) {
+        System.out.println(toPrint);
         prints.add(toPrint);
     }
 

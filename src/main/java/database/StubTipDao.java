@@ -1,10 +1,9 @@
-package tietokanta;
+package database;
 
-import java.util.ArrayList;
+import tiplogic.Tip;
+
 import java.util.List;
 import java.util.Map;
-
-import vinkkilogic.Tip;
 
 public class StubTipDao implements Dao<Tip, Long> {
 
@@ -37,8 +36,18 @@ public class StubTipDao implements Dao<Tip, Long> {
     }
 
     @Override
+    public List<Tip> getByValue(Map<String, Object> map, Boolean exactMatch) {
+        return null;
+    }
+
+    @Override
     public void deleteByValue(Map<String, Object> map) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void deleteByValue(Map<String, Object> map, Boolean exactMatch) {
+
     }
 
     @Override
