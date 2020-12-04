@@ -1,14 +1,12 @@
-package tietokanta;
+package database;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import vinkkilogic.Course;
+import tiplogic.Course;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 
 import static utilities.MappingUtils.keysToLowerUnderscore;
 import static utilities.MappingUtils.toLowerUnderscore;
@@ -38,26 +36,23 @@ public class CourseDao implements Dao<Course, Long>{
 
     @Override
     public List<Course> getByValue(Map<String, Object> map) {
+        return getByValue(map, false);
+    }
+
+    @Override
+    public List<Course> getByValue(Map<String, Object> map, Boolean exactMatch) {
         Map.Entry<String, Object> entry = map.entrySet().iterator().next();
         return jdbcTemplate.query(
                 "SELECT * FROM Courses WHERE "  + toLowerUnderscore(entry.getKey()) + " LIKE ?",
                 new BeanPropertyRowMapper<>(Course.class),
-                "%" + entry.getValue() + "%"
+                exactMatch ? "%" + entry.getValue() + "%" : entry.getValue()
         );
     }
 
     @Override
     public void update(Course course) {
-        StringJoiner str = new StringJoiner(" = ?, ", "UPDATE Courses SET ", " = ? WHERE id = ?");
-        Map<String, Object> map = course.getPropertyMap();
-        map.remove("id");
-        ArrayList<Object> valueList = new ArrayList<>();
-        map.forEach((k, v) -> {
-            str.add(toLowerUnderscore(k));
-            valueList.add(v);
-        });
-        valueList.add(course.getId());
-        jdbcTemplate.update(str.toString(), valueList.toArray());
+        Map<String, ?> map = getUpdateMap("Courses", course);
+        jdbcTemplate.update((String) map.get("queryString"), (Object[]) map.get("valueList"));
     }
 
     @Override
@@ -67,6 +62,11 @@ public class CourseDao implements Dao<Course, Long>{
 
     @Override
     public void deleteByValue(Map<String, Object> map) {
+        deleteByValue(map, false);
+    }
+
+    @Override
+    public void deleteByValue(Map<String, Object> map, Boolean exactMatch) {
         Map.Entry<String, Object> entry = map.entrySet().iterator().next();
         jdbcTemplate.update(
                 "DELETE FROM Courses WHERE " + toLowerUnderscore(entry.getKey()) + " LIKE ?",
