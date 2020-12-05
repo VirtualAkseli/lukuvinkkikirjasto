@@ -26,7 +26,7 @@ https://github.com/akirataguchi115/lukuvinkkikirjasto/projects
 
 ### Coding tasks
 
-- The task has been jUnit tested (when it makes sense)
+- The task has been JUnit tested (when it makes sense)
 - The task has been merged to the main branch
 
 ## How to run
