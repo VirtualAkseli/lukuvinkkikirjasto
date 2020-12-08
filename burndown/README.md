@@ -10,3 +10,5 @@ https://docs.google.com/spreadsheets/d/1vvnHpUUH4D7kOmk_UIf7jPRziTpdBS7EsQDth8bS
 
 ## Charts of the previous sprints
 ![Chart of sprint 1](charts/sprint1.svg)
+
+![Chart of sprint 2](charts/sprint2.svg)
