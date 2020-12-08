@@ -1,5 +1,6 @@
 package database;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -39,6 +40,11 @@ public class TipDaoTipsTableTest {
         doNothing().when(tipDao).deleteTipTags(anyLong());
         doReturn(new ArrayList<Course>()).when(tipDao).getTipCourses(anyLong());
         doReturn(new ArrayList<Tag>()).when(tipDao).getTipTags(anyLong());
+    }
+
+    @After
+    public void after() {
+        db.shutdown();
     }
 
     @Test
