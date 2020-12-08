@@ -1,5 +1,6 @@
 package database;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -27,6 +28,11 @@ public class CourseDaoTest {
     @Before
     public void before() {
         jdbcTemplate.execute("TRUNCATE TABLE Courses; ALTER TABLE Courses ALTER COLUMN id RESTART WITH 1;");
+    }
+
+    @After
+    public void after() {
+        db.shutdown();
     }
 
     @Test
