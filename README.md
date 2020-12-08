@@ -34,3 +34,4 @@ https://github.com/akirataguchi115/lukuvinkkikirjasto/projects
 `git clone` this repository. `cd` to the cloned repository and `./gradlew run` to start the application.
 
 Use `gradlew.bat` if you're using Windows.
+

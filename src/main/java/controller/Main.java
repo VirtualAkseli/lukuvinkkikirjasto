@@ -18,7 +18,7 @@ public class Main {
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
 
         Dao tipDao = new TipDao(jdbcTemplate);
-        UserInterface kl = new UserInterface(tipDao, new ConsoleIO());
-        kl.run();
+        UserInterface ui = new UserInterface(tipDao, new ConsoleIO());
+        ui.run();
     }
 }
