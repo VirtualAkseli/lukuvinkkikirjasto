@@ -1,5 +1,6 @@
 package database;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,6 +40,11 @@ public class TipDaoJoinTablesTest {
                 "TRUNCATE TABLE Tip_courses;" +
                 "SET REFERENTIAL_INTEGRITY TRUE "
         );
+    }
+
+    @After
+    public void after() {
+        db.shutdown();
     }
 
     @Test

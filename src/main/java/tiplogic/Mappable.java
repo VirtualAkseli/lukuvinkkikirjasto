@@ -12,7 +12,7 @@ public interface Mappable {
         Map<String, Object> map = new HashMap<>();
         Arrays.stream(this.getClass().getDeclaredFields()).forEach((field -> {
             try { map.put(field.getName(), field.get(this)); }
-            catch (IllegalAccessException e) { e.printStackTrace(); }
+            catch (IllegalAccessException ignored) { }
         }));
         return map;
     }

@@ -1,5 +1,6 @@
 package database;
 
+import org.junit.After;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -25,6 +26,11 @@ public class DaoIntegrationTest {
     private TipDao tipDao = new TipDao(jdbcTemplate);
     private CourseDao courseDao = new CourseDao(jdbcTemplate);
     private TagDao tagDao = new TagDao(jdbcTemplate);
+
+    @After
+    public void after() {
+        db.shutdown();
+    }
 
     @Test
     public void daoIntegrationTest() {
@@ -62,6 +68,7 @@ public class DaoIntegrationTest {
         } catch (IndexOutOfBoundsException ignored) { }
         tip1.getCourses().remove(0);
         tipDao.update(tip1);
+        tip1 = tipDao.get(tip1.getId());
         assertThat(tip1.getCourses().size(), is(1));
         assertThat(tip1.getCourses().get(0).getCourseName(), is("Course2"));
         tipDao.delete(3L);
