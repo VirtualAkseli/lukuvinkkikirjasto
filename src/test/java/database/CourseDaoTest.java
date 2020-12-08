@@ -36,14 +36,14 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void get() {
+    public void courseNameIsCorrectWhenRetrievedById() {
         jdbcTemplate.update("INSERT INTO Courses (course_name) VALUES ('name')");
         Course out = courseDao.get(1L);
         assertThat(out.getCourseName(), is("name"));
     }
 
     @Test
-    public void getByValue() {
+    public void courseNameIsCorrectWhenRetrievedByName() {
         jdbcTemplate.update("INSERT INTO Courses (course_name) VALUES ('name')");
         List<Course> list = courseDao.getByValue(toMap("courseName", "name"));
         assertThat(list.size(), is(1));
@@ -52,7 +52,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void update() {
+    public void courseNameIsCorrectAfterUpdate() {
         jdbcTemplate.update("INSERT INTO Courses (course_name) VALUES ( ? )", "old name");
         Course in = new Course();
         in.setId(1L);
@@ -64,7 +64,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void delete() {
+    public void deletingCourseReflectedCorrectlyInNumberOfCourses() {
         jdbcTemplate.update("INSERT INTO Courses (course_name) VALUES ( ? )", "old name");;
         courseDao.delete(1L);
         List<Course> out = jdbcTemplate.query("SELECT * FROM Courses WHERE id = 1",
@@ -73,7 +73,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void deleteByValue() {
+    public void courseCanBeDeletedByItsNAme() {
         jdbcTemplate.update("INSERT INTO Courses (course_name) VALUES ('name')");
         courseDao.deleteByValue(toMap("courseName", "name"));
         List<Course> out = jdbcTemplate.query("SELECT * FROM Courses WHERE id = 1",
@@ -81,6 +81,7 @@ public class CourseDaoTest {
         assertThat(out.size(), is(0));
     }
 
+    
     @Test
     public void list() {
         jdbcTemplate.update("INSERT INTO Courses (course_name) VALUES ('1'), ('2'), ('3')");
