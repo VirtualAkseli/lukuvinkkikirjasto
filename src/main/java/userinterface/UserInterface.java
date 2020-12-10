@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static utilities.MappingUtils.toMap;
+import controller.TipController;
 
 public class UserInterface {
 
-    Dao<Tip, Long> tipDao;
+    TipController controller;
     private IO io;
 
-    public UserInterface(Dao<Tip, Long> tipDao, IO io) {
-        this.tipDao = tipDao;
+    public UserInterface(TipController controller, IO io) {
+        this.controller = controller;
         this.io = io;
     }
 
@@ -74,9 +74,9 @@ public class UserInterface {
         tipData = getInput(tipData);
         //after this tipData has type on 0, author on 1, name on 2, possible identifier on 3, possible url on 4, and comments on 5.
         //and tipData is ready for controller.
-
+        controller.addTip(tipData);
 //        tipDao.create(new Tip(type, title, author));
-//        System.out.println("Lisätty!");
+       System.out.println("Lisätty!");
 //        System.out.println("Kirjan nimi: " + title);
 //        System.out.println("Kirjailija: " + author);
     }
@@ -190,16 +190,14 @@ public class UserInterface {
         io.print("Hakusana:");
         String keyword = io.readLine("Hakusana:");
         io.print("Haetaan...");
-        List<Tip> byTitle = tipDao.getByValue(toMap("tip_name", keyword));
-        List<Tip> byAuthor = tipDao.getByValue(toMap("author", keyword));
-        io.print("Löytyi " + (byTitle.size() + byAuthor.size()) + " hakutulosta.");
-        Stream.concat(byTitle.stream(), byAuthor.stream())
-                .collect(Collectors.toList()).forEach(item -> io.print(item.toString()));
+        List<Tip> results = controller.searchWithWord(keyword);
+        io.print("Löytyi " + results.size() + " hakutulosta.");
+        results.stream().collect(Collectors.toList()).forEach(item -> io.print(item.toString()));
         io.print("");
     }
 
     private void list() {
         io.print("Kaikki kirjat:");
-        tipDao.list().forEach(item -> io.print(item.toString()));
+        controller.list().forEach(item -> io.print(item.toString()));
     }
 }
