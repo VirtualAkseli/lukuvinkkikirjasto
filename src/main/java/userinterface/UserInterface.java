@@ -187,19 +187,109 @@ public class UserInterface {
     }
 
     private void search() {
-        io.print("Hakusana:");
-        String keyword = io.readLine("Hakusana:");
-        io.print("Haetaan...");
-        List<Tip> byTitle = tipDao.getByValue(toMap("tip_name", keyword));
-        List<Tip> byAuthor = tipDao.getByValue(toMap("author", keyword));
-        io.print("Löytyi " + (byTitle.size() + byAuthor.size()) + " hakutulosta.");
-        Stream.concat(byTitle.stream(), byAuthor.stream())
-                .collect(Collectors.toList()).forEach(item -> io.print(item.toString()));
-        io.print("");
+         while (true) {
+            io.print("1. Hae vinkin nimen tai tekijän perusteella.");
+            io.print("2. Hae tagin perusteella");
+            io.print("3. Peruuta");
+            String command = io.readLine("Valitse numerolla sopiva haku");
+            switch(command){
+                case"1":
+                    io.print("Hakusana:");
+                    String keyword = io.readLine("Hakusana:");
+                    io.print("Haetaan...");
+                    List<Tip> byTitle = tipDao.getByValue(toMap("tip_name", keyword));
+                    List<Tip> byAuthor = tipDao.getByValue(toMap("author", keyword));
+                    io.print("Löytyi " + (byTitle.size() + byAuthor.size()) + " hakutulosta.");
+                    Stream.concat(byTitle.stream(), byAuthor.stream())
+                            .collect(Collectors.toList()).forEach(item -> io.print(item.toString()));
+                    io.print("");
+                    byTitle.stream().forEach(item -> io.print(item.toString()));
+                case"2":
+                    String tagToSearch = io.readLine("Anna haettava tagi");
+//                  List<Tip> byTag = 
+//                  io.print("Löytyi " + byTag.size()+ " hakutulosta.");
+//                  byTag.stream().forEach(item -> io.print(item.toString()));
+//                  io.print("");
+                case"3":
+                    return;
+                default:
+                    search();
+                    return;
+            }
+            
+         }
     }
+         
 
     private void list() {
-        io.print("Kaikki kirjat:");
-        tipDao.list().forEach(item -> io.print(item.toString()));
+        while(true){
+            io.print("\n\n1. Kirja");
+            io.print("2. Podcast");
+            io.print("3. Blogi");
+            io.print("4. Kaikki");
+            io.print("5. Peruuta listaus");
+            String command = io.readLine("Valitse numerolla sopiva vaihtoehto");
+            switch(command){
+                case "1":
+                    //kontrollerille
+                    return;
+                case "2":
+                    //kontrollerille
+                    return;
+                case "3":
+                    //kontrollerille
+                    return;
+                case "4":
+                    //kontrollerille
+                    return;
+                case "5":
+                    return;
+                default:
+                    list();
+                    
+            }
+//            if(userWantsToModify()){
+//               switch(whatToModify()){
+//                   case"edit":
+//                       io.print("Valitse muokattava vinkki listan numerolla.");
+//                   case"markAsRead":
+//                       io.print("Valitse luetuksi merkattu vinkki listan numerolla");
+//               }
+//            }
+        }
+        
+    }
+    
+    private boolean userWantsToModify(){
+        io.print("\n\n1. Kyllä");
+        io.print("2. En");
+        String command = io.readLine("Haluatko muokata tai merkata luetuksi?");
+        switch(command){
+            case "1":
+                //kontrollerille
+                return true;
+            case "2":
+                return false;
+            default:
+                return userWantsToModify();
+        }
+    }
+    
+    private String whatToModify(){
+        io.print("\n\n1. Muokkaa vinkkiä");
+        io.print("2. Merkkaa vinkki luetuksi");
+        io.print("3. Peruuta");
+        String command = io.readLine("Haluatko muokata tai merkata luetuksi?");
+        switch(command){
+            case"1":
+                return "edit";
+            case"2":
+                return "markAsRead";
+            case"3":
+                return "";
+            default:
+                return whatToModify();
+        }
     }
 }
+    
