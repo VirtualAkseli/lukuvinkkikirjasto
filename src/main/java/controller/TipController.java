@@ -5,21 +5,38 @@ import tiplogic.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TipController {
-    private ArrayList<Tip> tips;
-    private ArrayList<Tag> allTags;
-    private ArrayList<Course> allCourses;
+import database.*;
+import static utilities.MappingUtils.toMap;
 
-    public TipController() {
-        this.tips = new ArrayList<>();
+public class TipController {
+    private List<Tip> tips;
+    private List<Tag> allTags;
+    private List<Course> allCourses;
+    private Dao<Tip, Long> tipDao;
+    private Dao<Course, Long> courseDao;
+    private Dao<Tag, Long> tagDao;
+
+    public TipController(Dao<Tip, Long> tipDao) {
+        this.tipDao = tipDao;
+        this.tips = tipDao.list();
         this.allTags = new ArrayList<>();
         this.allCourses = new ArrayList<>();
     }
-    //method recieves an array with tip data asked from the user
+    public TipController(Dao<Tip, Long> tipDao, Dao<Course, Long> courseDao, Dao<Tag, Long> tagDao) {
+        this.tipDao = tipDao;
+        this.courseDao = courseDao;
+        this.tagDao = tagDao;
+        this.tips = tipDao.list();
+        this.allTags = tagDao.list();
+        this.allCourses = courseDao.list();
+    }
+        //method recieves an array with tip data asked from the user
     //the method presumes the array had been created correctly in UI
     //strings in indexes: 0 tip type, 1 author, 2 tip name, 3 identifyer, 4 url, 5 comments
     public void addTip(String[] data) {
         Tip tip = new Tip(data[1], data[2]);
+        Long id = tipDao.create(tip);
+        tip.setId(id);
         tip.setTipType(data[0]);
         tip.setIdentifier(data[3]);
         tip.setUrl(data[4]);
@@ -39,8 +56,9 @@ public class TipController {
                 }
             }
             Tag newT = new Tag((long) 12345, newTag);
+            Long id = tagDao.create(newT);
+            newT.setId(id);
             tipTags.add(newT);
-            //add new tag to the database
         }
         tip.setTags(tipTags);
     }
@@ -54,13 +72,14 @@ public class TipController {
                 }
             }
             Course newC = new Course((long) 54321, newCourse);
+            Long id = courseDao.create(newC);
+            newC.setId(id);
             tipCourses.add(newC);
-            //add new course to the database
         }
         tip.setCourses(tipCourses);
     }
 
-    public List<Tip> getTips() {
+    public List<Tip> list() {
         return this.tips;
     }
 
@@ -68,6 +87,13 @@ public class TipController {
         ArrayList<Tip> results = new ArrayList<>();
         for (Tip tip: tips) if (tip.getTipType().equals(type)) results.add(tip);
         return results;
+    }
+
+    public List<Tip> searchWithWord(String keyword) {
+        List<Tip> t = new ArrayList<>();
+        for (Tip tip: tipDao.getByValue(toMap("tip_name", keyword))) t.add(tip);
+        for (Tip tip: tipDao.getByValue(toMap("author", keyword))) t.add(tip);
+        return t;
     }
 
     public List<Tip> searchWithTag(Tag tag) {
