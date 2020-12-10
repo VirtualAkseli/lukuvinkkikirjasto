@@ -32,41 +32,44 @@ public class TipController {
     }
         //method recieves an array with tip data asked from the user
     //the method presumes the array had been created correctly in UI
-    //strings in indexes: 0 tip type, 1 author, 2 tip name, 3 identifyer, 4 url, 5 comments
+    //strings in indexes: 0 tip type, 1 author, 2 tip name, 3 identifier, 4 url, 5 comments, 6 tags, 7 related courses
     public void addTip(String[] data) {
-        Tip tip = new Tip(data[1], data[2]);
-        Long id = tipDao.create(tip);
-        tip.setId(id);
+        Tip tip = new Tip(data[0]);
+        tip.setAuthor(data[1]);
+        tip.setTipName(data[2]);
         tip.setTipType(data[0]);
         tip.setIdentifier(data[3]);
         tip.setUrl(data[4]);
-//        addTags(tip, separate(data[X]));
-//        addCourses(tip, separate(data[X]));
         tip.setComments(data[5]);
+        if(!data[6].equals(""))tip = addTags(tip, separate(data[6]));
+        if(!data[7].equals(""))tip = addCourses(tip, separate(data[7]));
+        Long id = tipDao.create(tip);
+        tip.setId(id);
         tips.add(tip);
     }
 
-    private void addTags(Tip tip, List<String> t) {
+    private Tip addTags(Tip tip, List<String> t) {
         ArrayList<Tag> tipTags = new ArrayList<>();
         for (String newTag: t) {
             for (Tag tag: allTags) {
-                if (tag.getTagName().equals(newTag)) {
+                if (tag.getTagName().toLowerCase().equals(newTag.toLowerCase())) {
                     tipTags.add(tag);
                     break;
                 }
             }
-            Tag newT = new Tag((long) 12345, newTag);
+            Tag newT = new Tag(newTag);
             Long id = tagDao.create(newT);
             newT.setId(id);
             tipTags.add(newT);
         }
         tip.setTags(tipTags);
+        return tip;
     }
-    private void addCourses(Tip tip, List<String> c) {
+    private Tip addCourses(Tip tip, List<String> c) {
         ArrayList<Course> tipCourses = new ArrayList<>();
         for (String newCourse: c) {
             for (Course course: allCourses) {
-                if (course.getCourseName().equals(newCourse)) {
+                if (course.getCourseName().toLowerCase().equals(newCourse.toLowerCase())) {
                     tipCourses.add(course);
                     break;
                 }
@@ -77,10 +80,15 @@ public class TipController {
             tipCourses.add(newC);
         }
         tip.setCourses(tipCourses);
+        return tip;
     }
 
     public List<Tip> list() {
         return this.tips;
+    }
+    
+    public List<Tag> listTags() {
+        return this.allTags;
     }
 
     public List<Tip> searchWithType(String type) {
@@ -98,8 +106,31 @@ public class TipController {
 
     public List<Tip> searchWithTag(Tag tag) {
         ArrayList<Tip> results = new ArrayList<>();
-        for (Tip tip: tips) if (tip.getTags().contains(tag)) results.add(tip);
+        for (Tip tip: tips){
+            for(Tag t : tip.getTags()){
+                if (t.getTagName().equals(tag.getTagName())) results.add(tip);
+            }
+        }
         return results;
+    }
+    
+    public void markTipAsRead(Tip tip){
+        if(tip.getTipName().contains("[LUETTU]")){
+            tip.setTipName(tip.getTipName().replace("[LUETTU]", ""));
+        } else {
+        tip.setTipName("[LUETTU]" + tip.getTipName());
+        updateTip(tip);
+        }
+    }
+    
+    public void updateTip(Tip tip){
+        tipDao.update(tip);
+        this.tips = tipDao.list();
+    }
+    
+    public void deleteTip(Tip tip){
+        tipDao.delete(tip.getId());
+        this.tips = tipDao.list();
     }
 
     //assist method to split the strings at a comma

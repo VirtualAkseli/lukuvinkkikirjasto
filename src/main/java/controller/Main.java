@@ -1,6 +1,8 @@
 package controller;
 
+import database.CourseDao;
 import database.Dao;
+import database.TagDao;
 import database.TipDao;
 import io.ConsoleIO;
 import org.springframework.boot.SpringApplication;
@@ -18,7 +20,9 @@ public class Main {
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
 
         Dao tipDao = new TipDao(jdbcTemplate);
-        TipController controller = new TipController(tipDao);
+        Dao tagDao = new TagDao(jdbcTemplate);
+        Dao courseDao = new CourseDao(jdbcTemplate);
+        TipController controller = new TipController(tipDao, courseDao, tagDao);
         UserInterface ui = new UserInterface(controller, new ConsoleIO());
         ui.run();
     }

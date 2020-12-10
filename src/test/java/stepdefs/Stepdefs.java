@@ -1,6 +1,7 @@
 package stepdefs;
 
 import controller.Main;
+import controller.TipController;
 import database.StubTipDao;
 import io.StubIO;
 import io.cucumber.java.Before;
@@ -24,6 +25,7 @@ public class Stepdefs {
     ArrayList<String> inputLines;
     ApplicationContext context;
     JdbcTemplate jdbcTemplate;
+    TipController tipController;
 
     @Before
     public void setup() {
@@ -31,6 +33,7 @@ public class Stepdefs {
         //this.context = SpringApplication.run(Main.class);
         //this.jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
         this.std = new StubTipDao();
+        this.tipController = new TipController(std);
     }
 
     @When("Program starts")
@@ -44,7 +47,7 @@ public class Stepdefs {
         inputLines.add("4");
 
         this.stubIO = new StubIO(inputLines);
-        this.kayttoliittyma = new UserInterface(std, stubIO);
+        this.kayttoliittyma = new UserInterface(tipController, stubIO);
         kayttoliittyma.run();
 
     }
@@ -57,7 +60,7 @@ public class Stepdefs {
         inputLines.add("5");
         inputLines.add("4");
         this.stubIO = new StubIO(inputLines);
-        this.kayttoliittyma = new UserInterface(std, stubIO);
+        this.kayttoliittyma = new UserInterface(tipController, stubIO);
         kayttoliittyma.run();
     }
 
