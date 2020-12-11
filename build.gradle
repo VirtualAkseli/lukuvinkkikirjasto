@@ -72,7 +72,7 @@ jacocoTestReport {
   afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
                     fileTree(dir: it, exclude: [
-                            '**/database/StubTipDao.java'
+                            'database/StubTipDao.java'
                     ])
                 }))
     }
