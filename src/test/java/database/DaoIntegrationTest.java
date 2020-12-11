@@ -1,5 +1,6 @@
 package database;
 
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +20,7 @@ import static org.junit.Assert.fail;
 import static utilities.MappingUtils.toMap;
 
 public class DaoIntegrationTest {
+
     private EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
             .setType(EmbeddedDatabaseType.H2)
             .addScript("test_schema.sql").build();
@@ -36,6 +38,14 @@ public class DaoIntegrationTest {
     public void daoIntegrationTest() {
         Tip tip1 = tipDao.get(tipDao.create(new Tip("book")));
         assertThat(tip1.getTipType(), is("book"));
+        tip1.setAuthor("Testaaja");
+        tip1.setTipName("Testaajan käsikirja");
+        tip1.setComments("Testaus on kivaa");
+        tip1.setUrl("");
+        tip1.setIdentifier("");
+        tip1.setTags(new ArrayList<>());
+        tip1.setCourses(new ArrayList<>());
+        assertThat(tip1.toString(), is("Tyyppi: Kirja\nKirjailija: Testaaja\nKirjan nimi: Testaajan käsikirja\nKommentti: Testaus on kivaa\n"));
         Course course1 = courseDao.get(courseDao.create(new Course("Course1")));
         Course course2 = courseDao.get(courseDao.create(new Course("Course2")));
         tip1.setCourses(Arrays.asList(course1, course2));
@@ -44,6 +54,7 @@ public class DaoIntegrationTest {
         assertThat(tip1.getCourses().size(), is(2));
         assertThat(tip1.getCourses().get(0).getCourseName(), is("Course1"));
         assertThat(tip1.getCourses().get(1).getCourseName(), is("Course2"));
+        assertThat(tip1.getCoursesAsString(), is("[Course1] [Course2] "));
         Tip tip2 = tipDao.get(tipDao.create(new Tip("video")));
         assertThat(tip2.getTipType(), is("video"));
         Tag tag1 = tagDao.get(tagDao.create(new Tag("Tag1")));
@@ -54,6 +65,7 @@ public class DaoIntegrationTest {
         assertThat(tip2.getTags().size(), is(2));
         assertThat(tip2.getTags().get(0).getTagName(), is("Tag1"));
         assertThat(tip2.getTags().get(1).getTagName(), is("Tag2"));
+        assertThat(tip2.getTagsAsString(), is("[Tag1] [Tag2] "));
         List<Tip> tips = tipDao.list();
         assertThat(tips.get(0).getTipType(), is("book"));
         assertThat(tips.get(1).getTipType(), is("video"));
@@ -65,7 +77,8 @@ public class DaoIntegrationTest {
         try {
             tipDao.get(2L);
             fail();
-        } catch (IndexOutOfBoundsException ignored) { }
+        } catch (IndexOutOfBoundsException ignored) {
+        }
         tip1.getCourses().remove(0);
         tipDao.update(tip1);
         tip1 = tipDao.get(tip1.getId());

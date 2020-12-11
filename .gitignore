@@ -22,4 +22,4 @@ build
 .Trashes
 bin/
 
-spring.log
+spring.log*
