@@ -257,6 +257,7 @@ public class UserInterface {
             io.print("2. Hae tagin perusteella");
             io.print("3. Peruuta");
             String command = io.readLine("Valitse numerolla sopiva haku");
+            AtomicInteger positionInList = new AtomicInteger(1);
             switch(command){
                 case"1":
                     String keyword = io.readLine("Hakusana:");
@@ -269,15 +270,24 @@ public class UserInterface {
                 case"2":
                     io.print("Tallennetut tagit:");
                     List<Tag> savedTags = controller.listTags();
-                    int i = 0;
                     for(Tag x : savedTags){
-                        io.print(i +". " + x.getTagName());
-                        i++;
+                        io.print(positionInList.getAndIncrement() +". " + x.getTagName());
                     }
-                    int tagToSearch = Integer.valueOf(io.readLine("Valitse haettava tagi numerolla"));
                     
+                    while(true){
+                           String targetTagString = io.readLine("Valitse haettava tagi numerolla");
+                           try {
+                               int targetTag = Integer.valueOf(targetTagString);
+                               if(targetTag < positionInList.get() && targetTag >0){
+                                   results = controller.searchWithTag(savedTags.get(targetTag-1));
+                                   break;
+                               }
+                               
+                           } catch(Exception e) {
+                               io.print("Virheellinen valinta");
+                           }
+                       }
                     io.print("Haetaan...");
-                    results = controller.searchWithTag(savedTags.get(tagToSearch));
                     io.print("Löytyi " + results.size() + " hakutulosta.");
                     results.stream().collect(Collectors.toList()).forEach(item -> io.print(item.toString()));
                     io.print("");
@@ -411,8 +421,6 @@ public class UserInterface {
         }
        
     }
-    
-    
     
     private boolean userWantsToModify(){
         io.print("\n\n1. Kyllä");

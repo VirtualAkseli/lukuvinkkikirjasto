@@ -88,7 +88,7 @@ public class TipController {
     }
     
     public List<Tag> listTags() {
-        return this.allTags;
+        return ((TagDao)tagDao).getTagsInUse();
     }
 
     public List<Tip> searchWithType(String type) {

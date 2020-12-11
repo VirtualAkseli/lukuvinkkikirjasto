@@ -48,6 +48,14 @@ public class TagDao implements Dao<Tag, Long> {
                 exactMatch ? "%" + entry.getValue() + "%" : entry.getValue()
         );
     }
+    
+ 
+    public List<Tag> getTagsInUse(){
+        String sql ="SELECT * FROM Tags WHERE exists(SELECT 1 FROM Tip_tags where tag_id = id)";
+        List<Tag> result = jdbcTemplate.query(
+            sql, new BeanPropertyRowMapper(Tag.class));
+        return result;
+    }
 
     @Override
     public void update(Tag tag) {
