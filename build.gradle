@@ -68,5 +68,12 @@ jacocoTestReport {
   reports {
     xml.enabled true
     html.enabled true
+  }
+  afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+                    fileTree(dir: it, exclude: [
+                            '**/database/StubTipDao.java'
+                    ])
+                }))
     }
 }
