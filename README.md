@@ -36,3 +36,5 @@ to start the application.
 
 Use `gradlew.bat` if you're using Windows.
 
+## Report (in Finnish)
+[Report](https://docs.google.com/document/d/1SA0bHciu1O6ZRWm4Axm6x1A0I_N10O6tpSImsBvf63c/edit?usp=sharing)
